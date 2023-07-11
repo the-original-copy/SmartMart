@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "206526103237",
+    "project_id": "smartmart-16707",
+    "storage_bucket": "smartmart-16707.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:206526103237:android:b4b56d26b02a5a7d967aac",
+        "android_client_info": {
+          "package_name": "com.smartherd.smartmart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "206526103237-nem6vov8m759oiaj8pl43qusf3o698ba.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.smartherd.smartmart",
+            "certificate_hash": "2dc5b8fafceb77568ef25c1b920854c2022267a3"
+          }
+        },
+        {
+          "client_id": "206526103237-a2vadvkh2hk6vt09j3599824dg5a0rbv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2GHPVsaTNika3bJbEj9OpzwZc5DXJLc4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "206526103237-a2vadvkh2hk6vt09j3599824dg5a0rbv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,148 @@
+package com.smartherd.smartmart.activities
+
+import android.app.Activity
+import android.app.Dialog
+import android.content.Intent
+import android.graphics.Typeface
+import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.view.WindowManager
+import androidx.core.view.GravityCompat
+import com.bumptech.glide.Glide
+import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.smartherd.smartmart.IntroActivity
+import com.smartherd.smartmart.R
+import com.smartherd.smartmart.databinding.ActivityMainBinding
+import com.smartherd.smartmart.databinding.DialogProgressBinding
+import com.smartherd.smartmart.databinding.NavHeaderMainBinding
+import com.smartherd.smartmart.firebase.FireBaseClass
+import com.smartherd.smartmart.models.User
+
+class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
+    lateinit var binding : ActivityMainBinding
+    lateinit var navViewBinding : NavHeaderMainBinding
+    lateinit var basebinding : DialogProgressBinding
+    private lateinit var mProgressDialog: Dialog
+    lateinit var userName : String
+    lateinit var userRole : String
+    var menu : Menu? = null
+    var menuItem: MenuItem? = null
+
+    companion object {
+        const val MY_PROFILE_REQUEST_CODE = 11
+        const val USER_DETAILS_REQUEST_CODE = 12
+    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        navViewBinding = NavHeaderMainBinding.bind(binding.navView.getHeaderView(0))
+        super.onCreate(savedInstanceState)
+        setContentView(binding.root)
+        FireBaseClass().userDetails(this@MainActivity)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
+        setUpActionBar()
+        binding.appBarMain.toolbarMainActivity.setNavigationOnClickListener {
+            toggleDrawer()
+        }
+        binding.navView.setNavigationItemSelectedListener(this)
+        menu = binding.navView.menu
+        binding.appBarMain.contentMain.cvCereal.setOnClickListener {
+            startActivity(Intent(this@MainActivity,CerealListActivity::class.java))
+        }
+
+    }
+
+    fun showProgressDialog(text: String) {
+        mProgressDialog = Dialog(this)
+        basebinding = DialogProgressBinding.inflate(layoutInflater)
+        basebinding.root.let {
+            mProgressDialog.setContentView(it)
+        }
+        basebinding.tvProgressText.text = text
+        mProgressDialog.show()
+    }
+    fun hideProgressDialog() {
+        mProgressDialog.dismiss()
+    }
+
+    private fun setUpActionBar() {
+        setSupportActionBar(binding.appBarMain.toolbarMainActivity)
+        supportActionBar?.title = null
+        binding.appBarMain.toolbarMainActivity.setNavigationIcon(R.drawable.ic_baseline_menu_24)
+        val typeface: Typeface =
+            Typeface.createFromAsset(assets, "backoutwebwebfont.ttf")
+        binding.appBarMain.toolbarTitle.typeface = typeface
+    }
+    private fun toggleDrawer() {
+        if(binding.drawerLayout.isDrawerOpen(GravityCompat.START)){
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            binding.drawerLayout.openDrawer(GravityCompat.START)
+        }
+    }
+
+    override fun onBackPressed() {
+        if(binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            doubleBackToExit()
+        }
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.nav_sign_out -> {
+                FirebaseAuth.getInstance().signOut()
+                val intent = Intent(this, IntroActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                startActivity(intent)
+                finish()
+            }
+            R.id.nav_my_profile -> {
+                val intent = Intent(this,ProfileActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                startActivityForResult(intent, MY_PROFILE_REQUEST_CODE)
+            }
+            R.id.nav_my_products -> {
+                startActivity(Intent(this,ProductListActivity::class.java))
+            }
+        }
+        binding.drawerLayout.closeDrawer(GravityCompat.START)
+        return true
+    }
+
+    fun updateNavigationUserDetails(user : User) {
+        // hideProgressDialog()
+        userName = user.name
+        userRole = user.role
+        navViewBinding.ivUserImage.let{
+            Glide
+                .with(this@MainActivity)
+                .load(user.image)
+                .centerCrop()
+                .placeholder(R.drawable.ic_baseline_account_circle_24)
+                .into(it)
+        }
+        navViewBinding.tvUsername.text = user.name
+        if(user.role == "C"){
+            navViewBinding.tvAccountType.text = "Customer"
+            menu!!.findItem(R.id.nav_my_products).isVisible = false
+            menu!!.findItem(R.id.nav_my_pending_orders).isVisible = false
+        }
+        else if(user.role == "F"){
+            navViewBinding.tvAccountType.text = "Farmer"
+            menu!!.findItem(R.id.nav_my_orders).isVisible = false
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == Activity.RESULT_OK && requestCode == MY_PROFILE_REQUEST_CODE) {
+            FireBaseClass().userDetails(this)
+        }
+    }
+}

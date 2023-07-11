@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_my_profile"
+            android:itemBackground = "@color/colorPrimary"
+            android:icon="@drawable/ic_baseline_account_circle_24"
+            android:title="My Profile"
+            />
+        <item
+            android:id="@+id/nav_my_orders"
+            android:itemBackground = "@color/colorPrimary"
+            android:icon="@drawable/ic_baseline_orders_24"
+            android:title="My Orders"/>
+        <item
+            android:id="@+id/nav_my_pending_orders"
+            android:itemBackground = "@color/colorPrimary"
+            android:icon="@drawable/ic_baseline_pending_orders_24"
+            android:title="Pending Orders"/>
+        <item
+            android:id="@+id/nav_my_products"
+            android:itemBackground = "@color/colorPrimary"
+            android:icon="@drawable/ic_baseline_product_24"
+            android:title="My Products"/>
+        <item
+            android:id="@+id/nav_my_payments"
+            android:itemBackground = "@color/colorPrimary"
+            android:icon="@drawable/ic_baseline_payments_24"
+            android:title="Payments"/>
+        <item
+            android:id="@+id/nav_sign_out"
+            android:itemBackground = "@color/colorPrimary"
+            android:icon="@drawable/ic_sign_out_24"
+            android:title="Sign Out"/>
+    </group>
+
+    <!--  android:visible="false" -->
+
+</menu>
