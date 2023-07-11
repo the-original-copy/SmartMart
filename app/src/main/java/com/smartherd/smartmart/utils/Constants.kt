@@ -16,4 +16,5 @@ object Constants {
     const val MEAT: String = "Meat"
     const val DAIRY: String = "Dairy"
     const val GREENSANDVEGETABLES: String = "Greens and Vegetables"
+    const val OTHER: String = "Other Farm Products"
 }
