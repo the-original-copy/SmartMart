@@ -54,6 +54,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cv_meat"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/card_view_marginStartEnd"
@@ -101,6 +102,7 @@
         android:layout_marginBottom="15dp"
         android:orientation="horizontal">
         <androidx.cardview.widget.CardView
+            android:id="@+id/cv_dairy"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginStart="5dp"
@@ -136,6 +138,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cv_fruits_and_vegetables"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/card_view_marginStartEnd"
@@ -173,6 +176,7 @@
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cv_other"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/card_view_marginStartEnd"

@@ -237,23 +237,32 @@ open class FireBaseClass : BaseActivity() {
                 Log.e("Get product Query Success", returnedDocument.documents.toString())
                 val productList: ArrayList<Product> = ArrayList()
                 val cerealList: ArrayList<Product> = ArrayList()
+                val meatList: ArrayList<Product> = ArrayList()
+                val dairyList: ArrayList<Product> = ArrayList()
+                val fvList: ArrayList<Product> = ArrayList()
+                val otherList: ArrayList<Product> = ArrayList()
                 for(i in returnedDocument.documents) {
                     val product = i.toObject(Product::class.java)!!
                     // get the list based on farmerID
                     if(field == Constants.FARMER_ID)
                         productList.add(product)
                     // get the list based on average location
-                    if(field == Constants.AVERAGE_LOCATION) {
+                    if(field == Constants.AVERAGE_LOCATION || field == Constants.PRODUCT_CATEGORY) {
                         // get cereal list
                         if(product.productCategory == Constants.CEREALS)
                             cerealList.add(product)
                         // get meat products
-
+                        if(product.productCategory == Constants.MEAT)
+                            meatList.add(product)
                         // get dairy products
-
+                        if(product.productCategory == Constants.DAIRY)
+                            dairyList.add(product)
                         // get fv products
-
+                        if(product.productCategory == Constants.GREENSANDVEGETABLES)
+                            fvList.add(product)
                         // get other products
+                        if(product.productCategory == Constants.OTHER)
+                            otherList.add(product)
                     }
                 }
                 when(activity) {
@@ -262,6 +271,18 @@ open class FireBaseClass : BaseActivity() {
                     }
                     is CerealListActivity -> {
                         activity.assignThisCerealList(cerealList)
+                    }
+                    is DairyListActivity -> {
+                        activity.assignThisDairyList(dairyList)
+                    }
+                    is FVListActivity -> {
+                        activity.assignThisFreshGreensFruitsList(fvList)
+                    }
+                    is MeatListActivity -> {
+                        activity.assignThisMeatList(meatList)
+                    }
+                    is OtherProductListActivity -> {
+                        activity.assignThisOtherProductList(otherList)
                     }
                 }
             }

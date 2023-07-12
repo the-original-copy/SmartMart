@@ -24,11 +24,13 @@ class CerealListActivity : BaseActivity() {
         if(intent.hasExtra(Constants.AVERAGE_LOCATION)){
             averageLocation = intent.getStringExtra(Constants.AVERAGE_LOCATION)!!
             FireBaseClass().getProductList(this,Constants.AVERAGE_LOCATION,averageLocation)
+        } else {
+            FireBaseClass().getProductList(this,Constants.PRODUCT_CATEGORY,Constants.CEREALS)
         }
     }
 
     fun assignThisCerealList(list: ArrayList<Product>) {
-        populateProductLists(list,binding.rvCerealList,binding.tvNoDairyCreated,this)
+        populateProductLists(list,binding.rvCerealList,binding.tvNoCerealCreated,this)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
