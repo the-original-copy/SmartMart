@@ -1,15 +1,26 @@
 package com.smartherd.smartmart.activities
 
 import android.app.Dialog
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.view.View
+import android.widget.Adapter
+import android.widget.TextView
 import android.widget.Toast
+import android.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.smartherd.smartmart.R
+import com.smartherd.smartmart.adapter.ProductListAdapter
 import com.smartherd.smartmart.databinding.DialogProgressBinding
+import com.smartherd.smartmart.models.Product
+import java.util.*
+import kotlin.collections.ArrayList
 
 open class BaseActivity : AppCompatActivity() {
     //lateinit var basebinding : DialogProgressBinding
@@ -67,7 +78,40 @@ open class BaseActivity : AppCompatActivity() {
         snackBar.show()
     }
 
+    fun setActionBar(toolbar: androidx.appcompat.widget.Toolbar?, color: String) {
+        setSupportActionBar(toolbar)
+        val actionBar = supportActionBar
+        actionBar?.title = null
+        if(actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            if(color == "w") {
+                actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_white_ios_24)
+            } else if(color == "b") {
+                actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_ios_24)
+            }
+            toolbar?.setNavigationOnClickListener {
+                onBackPressed()
+            }
+
+        }
+    }
     open fun getCurrentUserId() : String {
         return FirebaseAuth.getInstance().currentUser!!.uid
+    }
+
+    fun populateProductLists(list: ArrayList<Product>,rv_list: RecyclerView, tv: TextView,context: Context) {
+        if(list.size > 0) {
+            rv_list.visibility = View.VISIBLE
+            tv.visibility = View.GONE
+            rv_list.layoutManager = LinearLayoutManager(context)
+            rv_list.setHasFixedSize(false)
+
+            val adapter = ProductListAdapter(context,list)
+            rv_list.adapter = adapter
+            }
+        else {
+            rv_list.visibility = View.INVISIBLE
+            tv.visibility = View.VISIBLE
+        }
     }
 }

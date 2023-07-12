@@ -188,7 +188,7 @@ open class FarmerSignUp : BaseActivity() {
                 if(task.isSuccessful) {
                     val firebaseUser : FirebaseUser = task.result!!.user!!
                     val registeredEmail = firebaseUser.email!!
-                    val user = User(firebaseUser.uid,name,registeredEmail," ",phonenumber,"C","F")
+                    val user = User(firebaseUser.uid,name,registeredEmail," ",phonenumber,mLocation,"F")
                     val farmer = Farmer(firebaseUser.uid,name,registeredEmail,phonenumber,mLocation,mLongitude,mLatitude,mPostalCode)
                     FireBaseClass().registerUser(this@FarmerSignUp,user)
                     FireBaseClass().createFarmer(this@FarmerSignUp,farmer)
@@ -232,7 +232,8 @@ open class FarmerSignUp : BaseActivity() {
                 override fun onAddressFound(address: String?) {
                     Log.e("Address ::", "" + address)
                     mLocation = address!!
-                    mPostalCode = address.substringBefore(",")
+                    val averageLocation = address.split(',')[1]
+                    mPostalCode = averageLocation
                     Log.e("Postal Code::",mPostalCode)
                     binding.etLocation.setText(address)
 

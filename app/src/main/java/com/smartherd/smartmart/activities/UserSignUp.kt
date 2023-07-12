@@ -245,9 +245,10 @@ open class UserSignUp : BaseActivity() {
                 override fun onAddressFound(address: String?) {
                     Log.e("Address ::", "" + address)
                     mLocation = address!!
-                    mPostalCode = address.substringBefore(",")
+                    val averageLocation = address.split(',')[1]
+                    mPostalCode = averageLocation
                     Log.e("Postal Code::",mPostalCode)
-                    binding.etLocation.setText(address                                  )
+                    binding.etLocation.setText(address)
 
                 }
                 override fun onError() {

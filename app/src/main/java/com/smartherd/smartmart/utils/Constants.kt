@@ -12,7 +12,7 @@ object Constants {
     const val LOCATION: String = "location"
     const val LONGITUDE: String = "longitude"
     const val LATITUDE : String = "latitude"
-    const val POSTAL: String = "postal"
+    const val AVERAGE_LOCATION: String = "average_location"
     const val CEREALS: String = "Cereals"
     const val MEAT: String = "Meat"
     const val DAIRY: String = "Dairy"

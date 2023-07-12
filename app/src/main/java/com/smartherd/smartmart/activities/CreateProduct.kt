@@ -32,6 +32,7 @@ class CreateProduct : BaseActivity() {
     companion object {
         private const val READ_STORAGE_PERMISSION_CODE = 3
         private const val PICK_IMAGE_REQUEST_CODE = 4
+        private const val CREATE_PRODUCT_REQUEST_CODE = 5
     }
     lateinit var binding: ActivityCreateProductBinding
     private var selectedCategory: String = " "
@@ -43,9 +44,11 @@ class CreateProduct : BaseActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         binding = ActivityCreateProductBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setActionBar(binding.toolbarCreateProductActivity,"w")
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
@@ -66,18 +69,6 @@ class CreateProduct : BaseActivity() {
         binding.btnCreateProduct.setOnClickListener {
             if(mSelectedImageFileUri != null)
                 uploadProductImage()
-        }
-    }
-
-    fun setActionBar() {
-        setSupportActionBar(binding.toolbarCreateProductActivity)
-        val actionBar = supportActionBar
-        if(actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true)
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_white_ios_24)
-        }
-        binding.toolbarCreateProductActivity.setNavigationOnClickListener {
-            onBackPressed()
         }
     }
 
@@ -186,7 +177,7 @@ class CreateProduct : BaseActivity() {
             mFarmerDetails.id,
             mFarmerDetails.longitude,
             mFarmerDetails.latitude,
-            mFarmerDetails.postal
+            mFarmerDetails.average_location
         )
         FireBaseClass().createProduct(this,product)
     }
@@ -197,6 +188,7 @@ class CreateProduct : BaseActivity() {
 
     fun productCreatedSuccessfully() {
         hideProgressDialog()
+        setResult(Activity.RESULT_OK)
         finish()
     }
 }

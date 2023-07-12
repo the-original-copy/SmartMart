@@ -18,7 +18,10 @@ import com.smartherd.smartmart.databinding.ActivityMainBinding
 import com.smartherd.smartmart.databinding.DialogProgressBinding
 import com.smartherd.smartmart.databinding.NavHeaderMainBinding
 import com.smartherd.smartmart.firebase.FireBaseClass
+import com.smartherd.smartmart.models.Customer
+import com.smartherd.smartmart.models.Farmer
 import com.smartherd.smartmart.models.User
+import com.smartherd.smartmart.utils.Constants
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var binding : ActivityMainBinding
@@ -27,8 +30,10 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private lateinit var mProgressDialog: Dialog
     lateinit var userName : String
     lateinit var userRole : String
+    lateinit var averageLocation : String
+    lateinit var mCustomer : Customer
+    lateinit var mFarmer: Farmer
     var menu : Menu? = null
-    var menuItem: MenuItem? = null
 
     companion object {
         const val MY_PROFILE_REQUEST_CODE = 11
@@ -51,9 +56,21 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         binding.navView.setNavigationItemSelectedListener(this)
         menu = binding.navView.menu
         binding.appBarMain.contentMain.cvCereal.setOnClickListener {
-            startActivity(Intent(this@MainActivity,CerealListActivity::class.java))
+            val intent = Intent(this,CerealListActivity::class.java)
+            intent.putExtra(Constants.AVERAGE_LOCATION,averageLocation)
+            startActivity(intent)
         }
 
+    }
+
+    fun getFarmerDetails(farmer: Farmer) {
+        mFarmer = farmer
+        averageLocation = mFarmer.average_location
+    }
+
+    fun getCustomerDetails(customer: Customer) {
+        mCustomer = customer
+        averageLocation = mCustomer.average_location
     }
 
     fun showProgressDialog(text: String) {
@@ -130,11 +147,13 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         navViewBinding.tvUsername.text = user.name
         if(user.role == "C"){
             navViewBinding.tvAccountType.text = "Customer"
+            FireBaseClass().customerDetails(this)
             menu!!.findItem(R.id.nav_my_products).isVisible = false
             menu!!.findItem(R.id.nav_my_pending_orders).isVisible = false
         }
         else if(user.role == "F"){
             navViewBinding.tvAccountType.text = "Farmer"
+            FireBaseClass().farmerDetails(this)
             menu!!.findItem(R.id.nav_my_orders).isVisible = false
         }
     }

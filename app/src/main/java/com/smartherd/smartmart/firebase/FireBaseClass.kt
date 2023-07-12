@@ -150,10 +150,29 @@ open class FireBaseClass : BaseActivity() {
                     is CreateProduct -> {
                         activity.getFarmerDetails(farmerDetails)
                     }
+                    is MainActivity -> {
+                        activity.getFarmerDetails(farmerDetails)
+                    }
                 }
             }.addOnFailureListener {
 
             }
+    }
+
+    fun customerDetails(activity: Activity) {
+        mFireStore.collection(Constants.CUSTOMERS)
+            .document(getCurrentUserId())
+            .get()
+            .addOnSuccessListener { document ->
+                val customerDetails = document.toObject(Customer::class.java)!!
+                when(activity) {
+                    is MainActivity -> {
+                        activity.getCustomerDetails(customerDetails)
+                    }
+                }
+
+            }
+
     }
 
 
@@ -206,6 +225,48 @@ open class FireBaseClass : BaseActivity() {
                     "Didn't work",
                     "Error writing document",
                 )
+            }
+    }
+
+    fun getProductList(activity: Activity,field: String,value : String) {
+        Log.e("CurrentUser", value)
+        mFireStore.collection(Constants.PRODUCTS)
+            .whereEqualTo(field,value)
+            .get()
+            .addOnSuccessListener { returnedDocument ->
+                Log.e("Get product Query Success", returnedDocument.documents.toString())
+                val productList: ArrayList<Product> = ArrayList()
+                val cerealList: ArrayList<Product> = ArrayList()
+                for(i in returnedDocument.documents) {
+                    val product = i.toObject(Product::class.java)!!
+                    // get the list based on farmerID
+                    if(field == Constants.FARMER_ID)
+                        productList.add(product)
+                    // get the list based on average location
+                    if(field == Constants.AVERAGE_LOCATION) {
+                        // get cereal list
+                        if(product.productCategory == Constants.CEREALS)
+                            cerealList.add(product)
+                        // get meat products
+
+                        // get dairy products
+
+                        // get fv products
+
+                        // get other products
+                    }
+                }
+                when(activity) {
+                    is ProductListActivity -> {
+                        activity.assignThisProductList(productList)
+                    }
+                    is CerealListActivity -> {
+                        activity.assignThisCerealList(cerealList)
+                    }
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e(activity.javaClass.simpleName, "Error while creating a board.", e)
             }
     }
     

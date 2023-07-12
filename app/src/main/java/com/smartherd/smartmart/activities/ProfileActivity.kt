@@ -19,7 +19,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.google.android.gms.location.*
-import com.google.android.material.internal.ContextUtils.getActivity
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.smartherd.smartmart.R
@@ -242,13 +241,13 @@ class ProfileActivity : BaseActivity() {
                 customerHashMap[Constants.LOCATION] = mLocation
                 customerHashMap[Constants.LONGITUDE] = mLongitude
                 customerHashMap[Constants.LATITUDE] = mLatitude
-                customerHashMap[Constants.POSTAL] = mPostalCode
+                customerHashMap[Constants.AVERAGE_LOCATION] = mPostalCode
             }
             else if(mUserDetails.role == "F"){
                 farmerHashMap[Constants.LOCATION] = mLocation
                 farmerHashMap[Constants.LONGITUDE] = mLongitude
                 farmerHashMap[Constants.LATITUDE] = mLatitude
-                farmerHashMap[Constants.POSTAL] = mPostalCode
+                farmerHashMap[Constants.AVERAGE_LOCATION] = mPostalCode
             }
             userHashMap[Constants.LOCATION] = mLocation
             anyChanges = true

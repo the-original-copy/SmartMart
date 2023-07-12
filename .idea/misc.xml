@@ -17,14 +17,17 @@
         <entry key="app/src/main/res/drawable/white_border_shape_button_rounded.xml" value="0.15" />
         <entry key="app/src/main/res/layout/activity_become_seller.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_cereal_list.xml" value="0.19375" />
-        <entry key="app/src/main/res/layout/activity_create_product.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_create_product.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_customer_sign_up.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/activity_dairy_list.xml" value="0.17864583333333334" />
         <entry key="app/src/main/res/layout/activity_farmer_sign_up.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_fvlist.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/activity_intro.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/activity_product_list.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_meat_list.xml" value="0.19375" />
+        <entry key="app/src/main/res/layout/activity_other_product_list.xml" value="0.19375" />
+        <entry key="app/src/main/res/layout/activity_product_detail.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_product_list.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_profile.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.19375" />
@@ -36,6 +39,7 @@
         <entry key="app/src/main/res/layout/dialog_forgot.xml" value="0.33" />
         <entry key="app/src/main/res/layout/dialog_progress.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/nav_header_main.xml" value="0.19270833333333334" />
+        <entry key="app/src/main/res/layout/product_item.xml" value="0.25" />
         <entry key="app/src/main/res/menu/activity_main_drawer.xml" value="0.1" />
       </map>
     </option>

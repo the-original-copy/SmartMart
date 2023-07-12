@@ -37,7 +37,7 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar_product_list_activity"/>
 
     <TextView
-        android:id="@+id/tv_no_products_created"
+        android:id="@+id/tv_no_product_created"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="350dp"
