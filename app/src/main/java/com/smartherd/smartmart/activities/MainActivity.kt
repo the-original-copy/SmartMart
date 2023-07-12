@@ -44,7 +44,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         navViewBinding = NavHeaderMainBinding.bind(binding.navView.getHeaderView(0))
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        FireBaseClass().userDetails(this@MainActivity)
+        updateDetails()
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
@@ -81,6 +81,11 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             startActivity(intent)
         }
 
+    }
+
+    fun updateDetails() {
+        showProgressDialog("Updating details...")
+        FireBaseClass().userDetails(this@MainActivity)
     }
 
     fun getFarmerDetails(farmer: Farmer) {
@@ -153,7 +158,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     fun updateNavigationUserDetails(user : User) {
-        // hideProgressDialog()
+        hideProgressDialog()
         userName = user.name
         userRole = user.role
         navViewBinding.ivUserImage.let{

@@ -1,10 +1,12 @@
 package com.smartherd.smartmart.activities
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.WindowManager
 import com.smartherd.smartmart.databinding.ActivityCerealListBinding
+import com.smartherd.smartmart.databinding.DialogProgressBinding
 import com.smartherd.smartmart.firebase.FireBaseClass
 import com.smartherd.smartmart.models.Product
 import com.smartherd.smartmart.utils.Constants
@@ -12,6 +14,8 @@ import com.smartherd.smartmart.utils.Constants
 class CerealListActivity : BaseActivity() {
     lateinit var binding: ActivityCerealListBinding
     lateinit var averageLocation: String
+    lateinit var basebinding : DialogProgressBinding
+    private lateinit var mProgressDialog: Dialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCerealListBinding.inflate(layoutInflater)
@@ -23,20 +27,42 @@ class CerealListActivity : BaseActivity() {
         setActionBar(binding.toolbarCerealListActivity,"w")
         if(intent.hasExtra(Constants.AVERAGE_LOCATION)){
             averageLocation = intent.getStringExtra(Constants.AVERAGE_LOCATION)!!
-            FireBaseClass().getProductList(this,Constants.AVERAGE_LOCATION,averageLocation)
+           updateDetails(averageLocation)
         } else {
-            FireBaseClass().getProductList(this,Constants.PRODUCT_CATEGORY,Constants.CEREALS)
+            updateDetails(averageLocation)
         }
     }
 
     fun assignThisCerealList(list: ArrayList<Product>) {
+        hideProgressDialog()
         populateProductLists(list,binding.rvCerealList,binding.tvNoCerealCreated,this)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == Activity.RESULT_OK && requestCode == ProductListActivity.CREATE_PRODUCT_REQUEST_CODE) {
-            FireBaseClass().getProductList(this,Constants.AVERAGE_LOCATION,averageLocation)
+            updateDetails(averageLocation)
         }
+    }
+
+    fun showProgressDialog(text: String) {
+        mProgressDialog = Dialog(this)
+        basebinding = DialogProgressBinding.inflate(layoutInflater)
+        basebinding.root.let {
+            mProgressDialog.setContentView(it)
+        }
+        basebinding.tvProgressText.text = text
+        mProgressDialog.show()
+    }
+    fun hideProgressDialog() {
+        mProgressDialog.dismiss()
+    }
+
+    fun updateDetails(averageLocation: String) {
+        showProgressDialog("Fetching products...")
+        if(averageLocation.isNotEmpty())
+            FireBaseClass().getProductList(this,Constants.AVERAGE_LOCATION,averageLocation)
+        else
+            FireBaseClass().getProductList(this,Constants.PRODUCT_CATEGORY,Constants.CEREALS)
     }
 }

@@ -120,8 +120,8 @@ class ProfileActivity : BaseActivity() {
     }
 
     fun setDataToUI(user: User) {
+        hideProgressDialog()
         mUserDetails = user
-
         binding.ivUserImage.let{
             Glide
                 .with(this)
