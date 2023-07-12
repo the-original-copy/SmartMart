@@ -23,7 +23,8 @@
         android:theme="@style/Theme.SmartMart"
         tools:targetApi="31">
         <activity
-            android:name=".ProductDetailActivity"
+            android:name=".activities.ProductDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:exported="false" />
         <activity
             android:name=".activities.ProductListActivity"

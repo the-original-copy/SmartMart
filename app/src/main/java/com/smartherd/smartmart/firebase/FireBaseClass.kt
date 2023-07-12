@@ -129,6 +129,9 @@ open class FireBaseClass : BaseActivity() {
                   is ProfileActivity -> {
                       activity.setDataToUI(userDetails)
                   }
+                  is ProductDetailActivity -> {
+                      activity.setUserDetails(userDetails)
+                  }
               }
             }
             .addOnFailureListener {
@@ -156,6 +159,25 @@ open class FireBaseClass : BaseActivity() {
                 }
             }.addOnFailureListener {
 
+            }
+    }
+
+    fun farmerDetailsGivenID(activity: Activity, farmerId: String) {
+        mFireStore.collection(Constants.FARMERS)
+            .document(farmerId)
+            .get()
+            .addOnSuccessListener { document ->
+                val farmerDetails = document.toObject(Farmer::class.java)!!
+                when(activity) {
+                    is ProductDetailActivity -> {
+                        activity.getFarmerDetails(farmerDetails)
+                    }
+                }
+            }.addOnFailureListener {
+                Log.e(
+                    "Didn't work",
+                    "Error writing document",
+                )
             }
     }
 
@@ -225,6 +247,21 @@ open class FireBaseClass : BaseActivity() {
                     "Didn't work",
                     "Error writing document",
                 )
+            }
+    }
+
+    fun getProductDetails(activity: Activity,productId: String) {
+        mFireStore.collection(Constants.PRODUCTS)
+            .document(productId)
+            .get()
+            .addOnSuccessListener { returnedDocument ->
+                Log.e("Get product Query Success", returnedDocument.toString())
+                val productDetails = returnedDocument.toObject(Product::class.java)
+                when(activity) {
+                    is ProductDetailActivity -> {
+                        activity.getProductDetailsToApp(productDetails!!)
+                    }
+                }
             }
     }
 

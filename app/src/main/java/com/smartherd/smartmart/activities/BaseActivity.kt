@@ -2,6 +2,7 @@ package com.smartherd.smartmart.activities
 
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -19,6 +20,7 @@ import com.smartherd.smartmart.R
 import com.smartherd.smartmart.adapter.ProductListAdapter
 import com.smartherd.smartmart.databinding.DialogProgressBinding
 import com.smartherd.smartmart.models.Product
+import com.smartherd.smartmart.utils.Constants
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -108,6 +110,15 @@ open class BaseActivity : AppCompatActivity() {
 
             val adapter = ProductListAdapter(context,list)
             rv_list.adapter = adapter
+
+            adapter.setOnClickListener(object: ProductListAdapter.OnClickListener{
+                override fun onClick(position: Int, product: Product) {
+                    val intent = Intent(context,ProductDetailActivity::class.java)
+                    intent.putExtra(Constants.ID,product.id)
+                    startActivity(intent)
+                }
+
+            })
             }
         else {
             rv_list.visibility = View.INVISIBLE
