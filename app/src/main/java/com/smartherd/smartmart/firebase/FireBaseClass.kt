@@ -6,11 +6,13 @@ import android.util.Log
 import android.widget.Toast
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.smartherd.smartmart.activities.*
 import com.smartherd.smartmart.databinding.DialogProgressBinding
 import com.smartherd.smartmart.models.Customer
 import com.smartherd.smartmart.models.Farmer
+import com.smartherd.smartmart.models.Product
 import com.smartherd.smartmart.models.User
 import com.smartherd.smartmart.utils.Constants
 
@@ -84,6 +86,36 @@ open class FireBaseClass : BaseActivity() {
                 )
             }
     }
+    fun createProduct(activity: CreateProduct, product: Product) {
+        mFireStore.collection(Constants.PRODUCTS)
+            .add(product)
+            .addOnSuccessListener { document ->
+                if(product.id == "") {
+                    product.id = document.id
+                    activity.setProductID(document.id)
+                }
+                activity.productCreatedSuccessfully()
+            }
+            .addOnFailureListener {
+                Log.e(
+                    "Didn't work",
+                    "Error writing document",
+                )
+            }
+    }
+
+    fun setFirebaseProductID(activity: Activity, id : String) {
+        when(activity) {
+            is CreateProduct -> {
+                mFireStore.collection(Constants.PRODUCTS)
+                    .document(id)
+                    .update("id",id)
+                    .addOnSuccessListener { Log.e("ID set", "DocumentSnapshot successfully updated!") }
+                    .addOnFailureListener { e -> Log.w("ID not set", "Error updating document", e) }
+            }
+        }
+
+    }
     fun userDetails(activity : Activity) {
         mFireStore.collection(Constants.USERS)
             .document(getCurrentUserId())
@@ -107,6 +139,24 @@ open class FireBaseClass : BaseActivity() {
                 }
             }
     }
+
+    fun farmerDetails(activity: Activity) {
+        mFireStore.collection(Constants.FARMERS)
+            .document(getCurrentUserId())
+            .get()
+            .addOnSuccessListener { document ->
+                val farmerDetails = document.toObject(Farmer::class.java)!!
+                when(activity) {
+                    is CreateProduct -> {
+                        activity.getFarmerDetails(farmerDetails)
+                    }
+                }
+            }.addOnFailureListener {
+
+            }
+    }
+
+
 
     fun updateUserProfileData(activity: Activity,userHashMap: HashMap<String, Any>) {
         mFireStore.collection(Constants.USERS)

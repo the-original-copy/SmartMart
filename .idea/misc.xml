@@ -12,18 +12,19 @@
         <entry key="app/src/main/res/drawable/shape_button_rounded.xml" value="0.15" />
         <entry key="app/src/main/res/drawable/shape_dialog_rounded.xml" value="0.1115" />
         <entry key="app/src/main/res/drawable/shape_iamge_view_border.xml" value="0.15" />
+        <entry key="app/src/main/res/drawable/shape_image_view_border.xml" value="0.1115" />
         <entry key="app/src/main/res/drawable/tab_selector.xml" value="0.15" />
         <entry key="app/src/main/res/drawable/white_border_shape_button_rounded.xml" value="0.15" />
         <entry key="app/src/main/res/layout/activity_become_seller.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_cereal_list.xml" value="0.19375" />
-        <entry key="app/src/main/res/layout/activity_create_product.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/activity_create_product.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_customer_sign_up.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/activity_dairy_list.xml" value="0.17864583333333334" />
         <entry key="app/src/main/res/layout/activity_farmer_sign_up.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_fvlist.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/activity_intro.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/activity_product_list.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_product_list.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_profile.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/activity_splash_screen.xml" value="0.19375" />

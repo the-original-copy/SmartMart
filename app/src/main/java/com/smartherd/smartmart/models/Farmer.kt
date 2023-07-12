@@ -9,8 +9,8 @@ val name : String = "",
 val email : String = "",
 val mobile : String = "",
 val location: String = "",
-val longitude: Double,
-val latitude: Double,
+val longitude: Double = 0.0,
+val latitude: Double = 0.0,
 val postal: String = ""
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
