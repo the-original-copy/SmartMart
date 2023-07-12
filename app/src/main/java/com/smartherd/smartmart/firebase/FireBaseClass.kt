@@ -197,8 +197,6 @@ open class FireBaseClass : BaseActivity() {
 
     }
 
-
-
     fun updateUserProfileData(activity: Activity,userHashMap: HashMap<String, Any>) {
         mFireStore.collection(Constants.USERS)
             .document(getCurrentUserId())
@@ -218,6 +216,23 @@ open class FireBaseClass : BaseActivity() {
                         activity.hideProgressDialog()
                     }
                 }
+            }
+    }
+
+    fun updateProduct(activity: UpdateProduct,productHashMap: HashMap<String,Any>,productId: String) {
+        mFireStore.collection(Constants.PRODUCTS)
+            .document(productId)
+            .update(productHashMap)
+            .addOnSuccessListener {
+                Log.e(activity.javaClass.simpleName, "Product Data updated successfully!")
+                Toast.makeText(activity, "Product updated successfully!", Toast.LENGTH_SHORT).show()
+                activity.productUpdateSuccess()
+            }
+            .addOnFailureListener {
+                Log.e(
+                    "Didn't work",
+                    "Error writing document",
+                )
             }
     }
 
@@ -260,6 +275,9 @@ open class FireBaseClass : BaseActivity() {
                 when(activity) {
                     is ProductDetailActivity -> {
                         activity.getProductDetailsToApp(productDetails!!)
+                    }
+                    is UpdateProduct -> {
+                        activity.setDataToUI(productDetails!!)
                     }
                 }
             }

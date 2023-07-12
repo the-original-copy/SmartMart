@@ -1,6 +1,7 @@
 package com.smartherd.smartmart.activities
 
 import android.app.Dialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -21,6 +22,7 @@ import java.net.URL
 class ProductDetailActivity : BaseActivity() {
     lateinit var binding: ActivityProductDetailBinding
     lateinit var mProduct: Product
+    lateinit var productID: String
     lateinit var mUser: User
     lateinit var mUserRole: String
     lateinit var mSelectedImageURL: URL
@@ -38,8 +40,13 @@ class ProductDetailActivity : BaseActivity() {
         )
         setActionBar(binding.toolbarProductDetail,"w")
         if(intent.hasExtra(Constants.ID)){
-            val productId = intent.getStringExtra(Constants.ID)
-            updateProductData(productId!!)
+            productID = intent.getStringExtra(Constants.ID)!!
+            updateProductData(productID)
+        }
+        binding.btnUpdateProduct.setOnClickListener {
+            val intent = Intent(this,UpdateProduct::class.java)
+            intent.putExtra(Constants.ID,productID)
+            startActivity(intent)
         }
     }
     fun showProgressDialog(text: String) {
@@ -80,7 +87,7 @@ class ProductDetailActivity : BaseActivity() {
             Glide
                 .with(this)
                 .load(product.productImage)
-                .fitCenter()
+                .centerCrop()
                 .placeholder(R.drawable.detail_screen_image_placeholder)
                 .into(it)
         }
