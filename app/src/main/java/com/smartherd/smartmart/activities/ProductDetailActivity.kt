@@ -4,14 +4,11 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import com.bumptech.glide.Glide
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import com.smartherd.smartmart.R
 import com.smartherd.smartmart.databinding.ActivityProductDetailBinding
 import com.smartherd.smartmart.databinding.DialogProgressBinding
@@ -21,6 +18,7 @@ import com.smartherd.smartmart.models.Product
 import com.smartherd.smartmart.models.User
 import com.smartherd.smartmart.utils.Constants
 import java.net.URL
+import java.util.*
 
 class ProductDetailActivity : BaseActivity() {
     lateinit var binding: ActivityProductDetailBinding
@@ -59,9 +57,15 @@ class ProductDetailActivity : BaseActivity() {
             binding.tvProductLocation.setOnClickListener {
                 mLatitude = mProduct.latitude
                 mLongitude = mProduct.longitude
-                val googleMapIntent = Uri.parse("google.navigation:q=:$mLatitude,$mLongitude")
-                val mapIntent = Intent(Intent.ACTION_VIEW,googleMapIntent)
-                startActivity(mapIntent)
+                val uri: String = java.lang.String.format(
+                    Locale.ENGLISH,
+                    "http://maps.google.com/maps?daddr=%f,%f",
+                    mLatitude,
+                    mLongitude
+                )
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+                intent.setPackage("com.google.android.apps.maps")
+                startActivity(intent)
             }
 
             binding.btnOrder.setOnClickListener {
