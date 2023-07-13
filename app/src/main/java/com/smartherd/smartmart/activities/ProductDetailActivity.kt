@@ -3,6 +3,7 @@ package com.smartherd.smartmart.activities
 import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -26,6 +27,8 @@ class ProductDetailActivity : BaseActivity() {
     lateinit var productID: String
     lateinit var mUser: User
     lateinit var mUserRole: String
+    var mLongitude: Double? = null
+    var mLatitude: Double? = null
     lateinit var mSelectedImageURL: URL
     lateinit var basebinding : DialogProgressBinding
     private lateinit var mProgressDialog: Dialog
@@ -50,6 +53,14 @@ class ProductDetailActivity : BaseActivity() {
             }
             binding.btnDeleteProduct.setOnClickListener {
                 deleteProduct(productID)
+            }
+
+            binding.tvProductLocation.setOnClickListener {
+                mLatitude = mProduct.latitude
+                mLongitude = mProduct.longitude
+                val googleMapIntent = Uri.parse("google.navigation:q=:$mLatitude,$mLongitude")
+                val mapIntent = Intent(Intent.ACTION_VIEW,googleMapIntent)
+                startActivity(mapIntent)
             }
         }
 
