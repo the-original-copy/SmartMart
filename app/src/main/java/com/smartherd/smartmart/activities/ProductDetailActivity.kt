@@ -1,5 +1,6 @@
 package com.smartherd.smartmart.activities
 
+import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -42,12 +43,16 @@ class ProductDetailActivity : BaseActivity() {
         if(intent.hasExtra(Constants.ID)){
             productID = intent.getStringExtra(Constants.ID)!!
             updateProductData(productID)
+            binding.btnUpdateProduct.setOnClickListener {
+                val intent = Intent(this,UpdateProduct::class.java)
+                intent.putExtra(Constants.ID,productID)
+                startActivity(intent)
+            }
+            binding.btnDeleteProduct.setOnClickListener {
+                deleteProduct(productID)
+            }
         }
-        binding.btnUpdateProduct.setOnClickListener {
-            val intent = Intent(this,UpdateProduct::class.java)
-            intent.putExtra(Constants.ID,productID)
-            startActivity(intent)
-        }
+
     }
     fun showProgressDialog(text: String) {
         mProgressDialog = Dialog(this)
@@ -93,6 +98,7 @@ class ProductDetailActivity : BaseActivity() {
         }
         binding.tvProductName.text = product.productName
         binding.tvProductDescription.text = product.productDescription
+        binding.tvProductCategory.text = product.productCategory
         FireBaseClass().farmerDetailsGivenID(this,product.farmerID)
         binding.tvProductPrice.text = product.productPrice
 
@@ -100,7 +106,7 @@ class ProductDetailActivity : BaseActivity() {
     }
 
     fun updateUserDetails() {
-        showProgressDialog("Updating View...")
+        // showProgressDialog("Updating View...")
         FireBaseClass().userDetails(this)
     }
     fun updateProductData(productId: String) {
@@ -108,10 +114,21 @@ class ProductDetailActivity : BaseActivity() {
         FireBaseClass().getProductDetails(this,productId)
 
     }
-
     fun getFarmerDetails(farmer: Farmer){
         mFarmer = farmer
         binding.tvProductName.text = mFarmer!!.name
+    }
+
+    fun deleteProduct(productId: String){
+        showProgressDialog("Deleting product.....")
+        FireBaseClass().deleteProduct(this@ProductDetailActivity,productId)
+    }
+
+    fun deletionSuccess() {
+        hideProgressDialog()
+        startActivity(Intent(this,MainActivity::class.java))
+        setResult(Activity.RESULT_OK)
+        finish()
     }
 
 }

@@ -2,6 +2,7 @@ package com.smartherd.smartmart.firebase
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.ContentValues.TAG
 import android.util.Log
 import android.widget.Toast
 import com.google.firebase.firestore.SetOptions
@@ -234,6 +235,17 @@ open class FireBaseClass : BaseActivity() {
                     "Error writing document",
                 )
             }
+    }
+
+    fun deleteProduct(activity: ProductDetailActivity,productID: String) {
+        mFireStore.collection(Constants.PRODUCTS)
+            .document(productID)
+            .delete()
+            .addOnSuccessListener {
+                Log.d(TAG, "DocumentSnapshot successfully deleted!")
+                activity.deletionSuccess()
+            }
+            .addOnFailureListener { e -> Log.w(TAG, "Error deleting document", e) }
     }
 
     fun updateCustomer(activity: ProfileActivity, customerHashMap: HashMap<String, Any>) {
