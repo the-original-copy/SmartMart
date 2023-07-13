@@ -172,12 +172,14 @@ class CreateProduct : BaseActivity() {
             binding.etProductName.text.toString(),
             binding.etProductDescription.text.toString(),
             binding.etProductCategory.text.toString(),
-            binding.etProductPrice.text.toString(),
+            Integer.parseInt(binding.etProductPrice.text.toString()),
             mProductImageURL,
             mFarmerDetails.id,
+            mFarmerDetails.location,
             mFarmerDetails.longitude,
             mFarmerDetails.latitude,
-            mFarmerDetails.average_location
+            mFarmerDetails.average_location,
+            0
         )
         FireBaseClass().createProduct(this,product)
     }

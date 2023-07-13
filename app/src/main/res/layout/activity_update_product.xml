@@ -101,20 +101,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/my_profile_et_mobile_marginTop">
-
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/et_product_price"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-
                         android:hint="Price"
-                        android:inputType="phone"
+                        android:inputType="number"
                         android:textSize="@dimen/et_text_size" />
-
                 </com.google.android.material.textfield.TextInputLayout>
-
-
-
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_update"

@@ -11,10 +11,7 @@ import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.smartherd.smartmart.activities.*
 import com.smartherd.smartmart.databinding.DialogProgressBinding
-import com.smartherd.smartmart.models.Customer
-import com.smartherd.smartmart.models.Farmer
-import com.smartherd.smartmart.models.Product
-import com.smartherd.smartmart.models.User
+import com.smartherd.smartmart.models.*
 import com.smartherd.smartmart.utils.Constants
 
 open class FireBaseClass : BaseActivity() {
@@ -87,6 +84,23 @@ open class FireBaseClass : BaseActivity() {
                 )
             }
     }
+
+    fun createOrder(activity: OrderConfirmation,order: Order) {
+        mFireStore.collection(Constants.ORDER)
+            .add(order)
+            .addOnSuccessListener { document ->
+                if(order.id == ""){
+                    order.id = document.id
+                    activity.setOrderID(order.id) }
+                activity.orderCreatedSuccessfully() }
+            .addOnFailureListener {
+                Log.e(
+                    "Didn't work",
+                    "Error writing document",
+                )
+            }
+    }
+
     fun createProduct(activity: CreateProduct, product: Product) {
         mFireStore.collection(Constants.PRODUCTS)
             .add(product)
@@ -104,6 +118,24 @@ open class FireBaseClass : BaseActivity() {
                 )
             }
     }
+
+    fun updateNoOfOrders(productID: String,orderNumber: Int) {
+        mFireStore.collection(Constants.PRODUCTS)
+            .document(productID)
+            .update(Constants.PRODUCT_NO_OF_ORDERS,orderNumber)
+            .addOnSuccessListener {
+                Log.e("Order number set", orderNumber.toString())
+            }
+    }
+
+    fun setFirebaseOrderID(activity: OrderConfirmation, id: String) {
+        mFireStore.collection(Constants.ORDER)
+            .document(id)
+            .update("id",id)
+            .addOnSuccessListener {
+                Log.e("ID set", "DocumentSnapshot successfully updated!") }
+            .addOnFailureListener { e -> Log.w("ID not set", "Error updating document", e) }
+            }
 
     fun setFirebaseProductID(activity: Activity, id : String) {
         when(activity) {
@@ -291,6 +323,9 @@ open class FireBaseClass : BaseActivity() {
                     is UpdateProduct -> {
                         activity.setDataToUI(productDetails!!)
                     }
+                    is OrderConfirmation -> {
+                        activity.returnProductDetails(productDetails!!)
+                    }
                 }
             }
     }
@@ -357,5 +392,7 @@ open class FireBaseClass : BaseActivity() {
                 Log.e(activity.javaClass.simpleName, "Error while creating a board.", e)
             }
     }
-    
+
+
+
 }

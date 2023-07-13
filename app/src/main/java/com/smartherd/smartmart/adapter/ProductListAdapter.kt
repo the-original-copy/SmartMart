@@ -34,7 +34,7 @@ class ProductListAdapter(private val context: Context,private var list: ArrayLis
             .into(holder.ivProductImage)
         holder.tvProductName.text = product.productName
         holder.tvProductDescription.text = product.productDescription
-        holder.tvProductPrice.text = product.productPrice
+        holder.tvProductPrice.text = product.productPrice.toString()
         holder.itemView.setOnClickListener {
             if(onClickListener != null){
                 onClickListener!!.onClick(position,product)

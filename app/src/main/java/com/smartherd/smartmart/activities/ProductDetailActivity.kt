@@ -26,6 +26,7 @@ class ProductDetailActivity : BaseActivity() {
     lateinit var productID: String
     lateinit var mUser: User
     lateinit var mUserRole: String
+    var quantity: Int = 0
     var mLongitude: Double? = null
     var mLatitude: Double? = null
     lateinit var mSelectedImageURL: URL
@@ -54,6 +55,7 @@ class ProductDetailActivity : BaseActivity() {
                 deleteProduct(productID)
             }
 
+            // Open view on map activity\
             binding.tvProductLocation.setOnClickListener {
                 mLatitude = mProduct.latitude
                 mLongitude = mProduct.longitude
@@ -68,12 +70,22 @@ class ProductDetailActivity : BaseActivity() {
                 startActivity(intent)
             }
 
+            binding.ivAdd.setOnClickListener {
+                quantity += 1
+                binding.tvProductQuantity.text = quantity.toString()
+            }
+            binding.ivLess.setOnClickListener {
+                quantity -= 1
+                binding.tvProductQuantity.text = quantity.toString()
+            }
+
             binding.btnOrder.setOnClickListener {
                 val intent = Intent(this,OrderConfirmation::class.java)
                 intent.putExtra(Constants.ID,productID)
                 Log.e("Product ID passed",productID)
                 intent.putExtra(Constants.INTENT_USER_ID,mUser.id)
                 Log.e("User ID passed",mUser.id)
+                intent.putExtra(Constants.QUANTITY,quantity)
                 startActivity(intent)
             }
         }
@@ -100,11 +112,13 @@ class ProductDetailActivity : BaseActivity() {
             binding.btnDeleteProduct.visibility = View.INVISIBLE
             binding.btnUpdateProduct.visibility = View.INVISIBLE
             binding.btnOrder.visibility = View.VISIBLE
+            binding.setQuantity.visibility = View.VISIBLE
         }
         else if(mUserRole == "F") {
             binding.btnDeleteProduct.visibility = View.VISIBLE
             binding.btnUpdateProduct.visibility = View.VISIBLE
             binding.btnOrder.visibility = View.INVISIBLE
+            binding.setQuantity.visibility = View.INVISIBLE
         }
     }
 
@@ -125,7 +139,8 @@ class ProductDetailActivity : BaseActivity() {
         binding.tvProductDescription.text = product.productDescription
         binding.tvProductCategory.text = product.productCategory
         FireBaseClass().farmerDetailsGivenID(this,product.farmerID)
-        binding.tvProductPrice.text = product.productPrice
+        binding.tvProductPrice.text = product.productPrice.toString()
+        binding.tvProductLocation.text = product.location
 
 
     }

@@ -203,7 +203,7 @@ class UpdateProduct : BaseActivity() {
             productHashMap[Constants.PRODUCT_CATEGORY] = binding.etProductCategory.text.toString()
             anyChanges = true
         }
-        if(binding.etProductPrice.text.toString() != mProduct.productPrice) {
+        if(binding.etProductPrice.text.toString() != mProduct.productPrice.toString()) {
             productHashMap[Constants.PRODUCT_PRICE] = binding.etProductPrice.text.toString()
             anyChanges = true
         }
