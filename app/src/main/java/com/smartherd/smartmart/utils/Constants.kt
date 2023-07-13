@@ -2,6 +2,7 @@ package com.smartherd.smartmart.utils
 
 object Constants {
     const val ID: String = "id"
+    const val INTENT_USER_ID: String = "user_id"
     const val USERS: String = "users"
     const val FARMERS: String = "farmers"
     const val CUSTOMERS: String = "customers"

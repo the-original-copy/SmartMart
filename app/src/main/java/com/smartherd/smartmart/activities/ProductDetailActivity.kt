@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import com.bumptech.glide.Glide
@@ -61,6 +62,15 @@ class ProductDetailActivity : BaseActivity() {
                 val googleMapIntent = Uri.parse("google.navigation:q=:$mLatitude,$mLongitude")
                 val mapIntent = Intent(Intent.ACTION_VIEW,googleMapIntent)
                 startActivity(mapIntent)
+            }
+
+            binding.btnOrder.setOnClickListener {
+                val intent = Intent(this,OrderConfirmation::class.java)
+                intent.putExtra(Constants.ID,productID)
+                Log.e("Product ID passed",productID)
+                intent.putExtra(Constants.INTENT_USER_ID,mUser.id)
+                Log.e("User ID passed",mUser.id)
+                startActivity(intent)
             }
         }
 

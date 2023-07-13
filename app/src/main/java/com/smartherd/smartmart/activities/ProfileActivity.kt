@@ -52,7 +52,7 @@ class ProfileActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         setUpActionBar()
-        FireBaseClass().userDetails(this)
+        updateUserDetails()
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -91,6 +91,11 @@ class ProfileActivity : BaseActivity() {
 //            intent.data = Uri.parse("tel:" + mUserDetails.mobile)
 //            startActivity(intent)
 //        }
+    }
+
+    fun updateUserDetails() {
+        showProgressDialog("Fetching data...")
+        FireBaseClass().userDetails(this)
     }
 
     private fun showProgressDialog(text: String) {

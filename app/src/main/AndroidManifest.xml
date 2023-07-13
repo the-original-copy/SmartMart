@@ -23,9 +23,13 @@
         android:theme="@style/Theme.SmartMart"
         tools:targetApi="31">
         <activity
-            android:name=".activities.UpdateProduct"
+            android:name=".activities.OrderConfirmation"
             android:theme="@style/AppTheme.NoActionBar"
             android:exported="false" />
+        <activity
+            android:name=".activities.UpdateProduct"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.ProductDetailActivity"
             android:exported="false"
