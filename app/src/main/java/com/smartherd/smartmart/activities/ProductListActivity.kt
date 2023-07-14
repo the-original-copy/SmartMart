@@ -17,6 +17,7 @@ class ProductListActivity : BaseActivity() {
     lateinit var binding: ActivityProductListBinding
     lateinit var basebinding : DialogProgressBinding
     private lateinit var mProgressDialog: Dialog
+
     companion object {
         open val CREATE_PRODUCT_REQUEST_CODE = 5
     }

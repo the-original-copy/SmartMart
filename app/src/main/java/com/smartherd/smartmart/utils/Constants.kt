@@ -26,9 +26,12 @@ object Constants {
     const val PRODUCT_PRICE: String = "productPrice"
     const val PRODUCT_IMAGE: String = "productImage"
     const val FARMER_ID: String = "farmerID"
+    const val CUSTOMER_ID: String = "customerID"
     const val PRODUCT_NO_OF_ORDERS: String = "productNumberOfOrders"
+    const val PRODUCT_ORDER_ID="orderID"
     const val ORDER: String = "orders"
     const val QUANTITY: String = "quantity"
+    const val CUSTOMER_TO_MY_ORDERS: String = "CustomerToMyOrders"
 
 
 }

@@ -32,9 +32,9 @@ class ProductListAdapter(private val context: Context,private var list: ArrayLis
             .centerCrop()
             .placeholder(R.drawable.ic_board_place_holder)
             .into(holder.ivProductImage)
-        holder.tvProductName.text = product.productName
-        holder.tvProductDescription.text = product.productDescription
-        holder.tvProductPrice.text = product.productPrice.toString()
+        holder.tvProductName.text = "Product Name: ${product.productName}"
+        holder.tvProductDescription.text = "Product Description: ${product.productDescription}"
+        holder.tvProductPrice.text = "Product Price: ${product.productPrice}"
         holder.itemView.setOnClickListener {
             if(onClickListener != null){
                 onClickListener!!.onClick(position,product)

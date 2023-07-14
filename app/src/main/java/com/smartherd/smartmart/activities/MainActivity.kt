@@ -152,6 +152,10 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             R.id.nav_my_products -> {
                 startActivity(Intent(this,ProductListActivity::class.java))
             }
+            R.id.nav_my_orders -> {
+                intent = Intent(this,CustomerMyOrdersActivity::class.java)
+                startActivity(intent)
+            }
         }
         binding.drawerLayout.closeDrawer(GravityCompat.START)
         return true

@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.ContentValues.TAG
 import android.util.Log
 import android.widget.Toast
+import com.google.android.play.core.integrity.e
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -18,6 +19,7 @@ open class FireBaseClass : BaseActivity() {
     private val mFireStore = Firebase.firestore
     lateinit var basebinding : DialogProgressBinding
     private lateinit var mProgressDialog: Dialog
+
     fun showProgressDialog(text: String) {
         mProgressDialog = Dialog(this)
         basebinding = DialogProgressBinding.inflate(layoutInflater)
@@ -333,7 +335,7 @@ open class FireBaseClass : BaseActivity() {
     fun getProductList(activity: Activity,field: String,value : String) {
         Log.e("CurrentUser", value)
         mFireStore.collection(Constants.PRODUCTS)
-            .whereEqualTo(field,value)
+            .whereEqualTo(field, value)
             .get()
             .addOnSuccessListener { returnedDocument ->
                 Log.e("Get product Query Success", returnedDocument.documents.toString())
@@ -343,31 +345,31 @@ open class FireBaseClass : BaseActivity() {
                 val dairyList: ArrayList<Product> = ArrayList()
                 val fvList: ArrayList<Product> = ArrayList()
                 val otherList: ArrayList<Product> = ArrayList()
-                for(i in returnedDocument.documents) {
+                for (i in returnedDocument.documents) {
                     val product = i.toObject(Product::class.java)!!
                     // get the list based on farmerID
-                    if(field == Constants.FARMER_ID)
+                    if (field == Constants.FARMER_ID)
                         productList.add(product)
                     // get the list based on average location
-                    if(field == Constants.AVERAGE_LOCATION || field == Constants.PRODUCT_CATEGORY) {
+                    if (field == Constants.AVERAGE_LOCATION || field == Constants.PRODUCT_CATEGORY) {
                         // get cereal list
-                        if(product.productCategory == Constants.CEREALS)
+                        if (product.productCategory == Constants.CEREALS)
                             cerealList.add(product)
                         // get meat products
-                        if(product.productCategory == Constants.MEAT)
+                        if (product.productCategory == Constants.MEAT)
                             meatList.add(product)
                         // get dairy products
-                        if(product.productCategory == Constants.DAIRY)
+                        if (product.productCategory == Constants.DAIRY)
                             dairyList.add(product)
                         // get fv products
-                        if(product.productCategory == Constants.GREENSANDVEGETABLES)
+                        if (product.productCategory == Constants.GREENSANDVEGETABLES)
                             fvList.add(product)
                         // get other products
-                        if(product.productCategory == Constants.OTHER)
+                        if (product.productCategory == Constants.OTHER)
                             otherList.add(product)
                     }
                 }
-                when(activity) {
+                when (activity) {
                     is ProductListActivity -> {
                         activity.assignThisProductList(productList)
                     }
@@ -394,5 +396,36 @@ open class FireBaseClass : BaseActivity() {
     }
 
 
+        fun getProductsOrdered(activity: CustomerMyOrdersActivity,customerID: String) {
+            val productHashMap = HashMap<String,OrderedProduct>()
+            mFireStore.collection(Constants.ORDER)
+                .whereEqualTo(Constants.CUSTOMER_ID,customerID)
+                .get()
+                .addOnSuccessListener { orders ->
+                    for(i in orders) {
+                        val order = i.toObject(Order::class.java)
+                        mFireStore.collection(Constants.PRODUCTS)
+                            .document(order.productID)
+                            .get()
+                            .addOnSuccessListener { product ->
+                                val productObject = product.toObject(Product::class.java)!!
+                                val orderedProduct = OrderedProduct(
+                                productObject.productName,
+                                productObject.productImage,
+                                order.id,
+                                order.totalPrice,
+                                order.quantity)
+                                productHashMap[order.id] = orderedProduct
+                                activity.assignThisOrderList(productHashMap)
+                            }
+                    }
+                }
+                .addOnFailureListener {
+                    Log.e(activity.javaClass.simpleName, "Error while creating a board.")
+                }
 
-}
+        }
+    }
+
+
+
