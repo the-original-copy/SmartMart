@@ -14,6 +14,7 @@ import com.smartherd.smartmart.models.Product
 class YourOrdersListAdapter(private val context: Context, private var list: ArrayList<OrderedProduct>): RecyclerView.Adapter<YourOrdersListAdapter.OrderedProductsViewHolder>() {
 
     private var onClickListener: OnClickListener? = null
+    private var orderedProduct: OrderedProduct? = null
     inner class OrderedProductsViewHolder(itemBinding:MyOrdersItemBinding): RecyclerView.ViewHolder(itemBinding.root) {
         var ivProductImage = itemBinding.ivProductImage
         var tvProductName = itemBinding.tvProductName
@@ -27,6 +28,7 @@ class YourOrdersListAdapter(private val context: Context, private var list: Arra
 
     override fun onBindViewHolder(holder: OrderedProductsViewHolder, position: Int) {
         val product = list[position]
+        orderedProduct = product
         Glide
             .with(context)
             .load(product.productImage)
@@ -34,7 +36,7 @@ class YourOrdersListAdapter(private val context: Context, private var list: Arra
             .placeholder(R.drawable.ic_board_place_holder)
             .into(holder.ivProductImage)
         holder.tvProductName.text = "Product name: ${product.productName}"
-        holder.tvTotalAmount.text = "Total Price: ${product.totalPrice}"
+        holder.tvTotalAmount.text = "Total Price:  ${product.totalPrice}"
         holder.tvProductQuantity.text = "Quantity : ${product.quantity}"
     }
 
@@ -48,6 +50,10 @@ class YourOrdersListAdapter(private val context: Context, private var list: Arra
 
     interface OnClickListener {
         fun onClick(position: Int, product: Product)
+    }
+
+    fun getOrderID() : String {
+        return orderedProduct!!.orderID
     }
 
 }

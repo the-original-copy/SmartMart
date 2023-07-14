@@ -5,10 +5,8 @@ import android.app.Dialog
 import android.content.ContentValues.TAG
 import android.util.Log
 import android.widget.Toast
-import com.google.android.play.core.integrity.e
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.smartherd.smartmart.activities.*
 import com.smartherd.smartmart.databinding.DialogProgressBinding
@@ -271,6 +269,21 @@ open class FireBaseClass : BaseActivity() {
             }
     }
 
+    fun deleteOrder(activity: Activity,orderID: String){
+        mFireStore.collection(Constants.ORDER)
+            .document(orderID)
+            .delete()
+            .addOnSuccessListener {
+                Log.d(TAG, "DocumentSnapshot successfully deleted!")
+                when(activity) {
+                    is CustomerMyOrdersActivity -> {
+                        activity.deleteProductSuccess()
+                    }
+                }
+            }
+            .addOnFailureListener {  e -> Log.w(TAG, "Error deleting document", e) }
+    }
+
     fun deleteProduct(activity: ProductDetailActivity,productID: String) {
         mFireStore.collection(Constants.PRODUCTS)
             .document(productID)
@@ -396,10 +409,10 @@ open class FireBaseClass : BaseActivity() {
     }
 
 
-        fun getProductsOrdered(activity: CustomerMyOrdersActivity,customerID: String) {
+        fun getProductsOrdered(activity: CustomerMyOrdersActivity, userID: String) {
             val productHashMap = HashMap<String,OrderedProduct>()
             mFireStore.collection(Constants.ORDER)
-                .whereEqualTo(Constants.CUSTOMER_ID,customerID)
+                .whereEqualTo(Constants.CUSTOMER_ID,userID)
                 .get()
                 .addOnSuccessListener { orders ->
                     for(i in orders) {

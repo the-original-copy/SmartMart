@@ -53,6 +53,7 @@
                 android:textColor="@color/secondary_text_color"
                 android:textSize="@dimen/item_board_created_by_text_size"
                 tools:text="Total Amount" />
+
         </LinearLayout>
     </LinearLayout>
 
