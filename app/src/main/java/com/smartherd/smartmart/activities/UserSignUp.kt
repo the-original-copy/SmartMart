@@ -193,7 +193,7 @@ open class UserSignUp : BaseActivity() {
         val email : String = binding.etEmail.text.toString().trim {it <= ' '}
         val password : String = binding.etPassword.text.toString().trim{ it <= ' '}
         val phonenumber : String = binding.etPhoneNumber.text.toString().trim {it <= ' '}
-
+        val localAreaName: String = binding.etLocalAreaName.text.toString().trim(){it <= ' '}
         if(validateForm(name,email,password,phonenumber)) {
             showProgressDialog("Registering user...")
             auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener{ task ->
@@ -201,8 +201,8 @@ open class UserSignUp : BaseActivity() {
                 if(task.isSuccessful) {
                     val firebaseUser : FirebaseUser = task.result!!.user!!
                     val registeredEmail = firebaseUser.email!!
-                    val user = User(firebaseUser.uid,name,registeredEmail," ",phonenumber,mLocation,"C")
-                    val customer = Customer(firebaseUser.uid,name,registeredEmail,phonenumber,mLocation,mLongitude,mLatitude,mPostalCode)
+                    val user = User(firebaseUser.uid,name,registeredEmail," ",phonenumber,mLocation,"C",localAreaName)
+                    val customer = Customer(firebaseUser.uid,name,registeredEmail,phonenumber,mLocation,mLongitude,mLatitude,mPostalCode,localAreaName)
                     Log.e("FireStore", user.id)
                     FireBaseClass().registerUser(this@UserSignUp,user)
                     FireBaseClass().createCustomer(this@UserSignUp,customer)

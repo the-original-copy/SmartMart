@@ -386,7 +386,8 @@ open class FireBaseClass : BaseActivity() {
     }
 
     fun getProductList(activity: Activity,field: String,value : String) {
-        Log.e("CurrentUser", value)
+        Log.e("Field", field)
+        Log.e("Value", value)
         mFireStore.collection(Constants.PRODUCTS)
             .whereEqualTo(field, value)
             .get()
@@ -404,7 +405,7 @@ open class FireBaseClass : BaseActivity() {
                     if (field == Constants.FARMER_ID)
                         productList.add(product)
                     // get the list based on average location
-                    if (field == Constants.AVERAGE_LOCATION || field == Constants.PRODUCT_CATEGORY) {
+                    if (field == Constants.AVERAGE_LOCATION || field == Constants.PRODUCT_CATEGORY || field == Constants.LOCAL_AREA_NAME) {
                         // get cereal list
                         if (product.productCategory == Constants.CEREALS)
                             cerealList.add(product)

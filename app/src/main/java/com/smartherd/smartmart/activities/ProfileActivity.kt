@@ -139,6 +139,7 @@ class ProfileActivity : BaseActivity() {
         binding.etEmail.setText(mUserDetails.email)
         binding.etMobile.setText(mUserDetails.mobile)
         binding.etLocation.setText(mUserDetails.location)
+        binding.etLocalAreaName.setText(mUserDetails.local_area_name)
     }
 
     override fun onRequestPermissionsResult(
@@ -241,6 +242,14 @@ class ProfileActivity : BaseActivity() {
             userHashMap[Constants.MOBILE] = binding.etMobile.text.toString()
             anyChanges = true
         }
+        if(binding.etLocalAreaName.text.toString() != mUserDetails.local_area_name){
+            if(mUserDetails.role == "C")
+                customerHashMap[Constants.LOCAL_AREA_NAME] = binding.etLocalAreaName.text.toString()
+            else if(mUserDetails.role == "F")
+                farmerHashMap[Constants.LOCAL_AREA_NAME] = binding.etLocalAreaName.text.toString()
+            userHashMap[Constants.LOCAL_AREA_NAME] = binding.etLocalAreaName.text.toString()
+            anyChanges = true
+        }
         if(binding.etLocation.text.toString() != mUserDetails.location){
             if(mUserDetails.role=="C"){
                 customerHashMap[Constants.LOCATION] = mLocation
@@ -264,6 +273,7 @@ class ProfileActivity : BaseActivity() {
         if(anyChanges && mUserDetails.role == "F"){
             FireBaseClass().updateFarmer(this,farmerHashMap)
             FireBaseClass().updateUserProfileData(this,userHashMap)
+
         }
     }
 

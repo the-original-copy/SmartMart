@@ -182,7 +182,8 @@ class CreateProduct : BaseActivity() {
             mFarmerDetails.latitude,
             mFarmerDetails.average_location,
             0,
-            uniqueConfirmationID
+            uniqueConfirmationID,
+            mFarmerDetails.local_area_name
         )
         FireBaseClass().createProduct(this,product)
     }

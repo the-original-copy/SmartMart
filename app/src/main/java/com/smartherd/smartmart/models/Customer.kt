@@ -11,7 +11,8 @@ data class Customer(
     val location: String = "",
     val longitude: Double = 0.0,
     val latitude: Double = 0.0,
-    val average_location: String = ""
+    val average_location: String = "",
+    val local_area_name: String = ""
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
@@ -21,6 +22,7 @@ data class Customer(
         parcel.readString()!!,
         parcel.readDouble(),
         parcel.readDouble(),
+        parcel.readString()!!,
         parcel.readString()!!
     ) {
     }
@@ -34,6 +36,7 @@ data class Customer(
         parcel.writeDouble(longitude)
         parcel.writeDouble(latitude)
         parcel.writeString(average_location)
+        parcel.writeString(local_area_name)
     }
 
     override fun describeContents(): Int {

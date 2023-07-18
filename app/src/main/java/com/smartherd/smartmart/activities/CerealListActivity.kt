@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowManager
 import com.smartherd.smartmart.databinding.ActivityCerealListBinding
 import com.smartherd.smartmart.databinding.DialogProgressBinding
@@ -14,6 +15,7 @@ import com.smartherd.smartmart.utils.Constants
 class CerealListActivity : BaseActivity() {
     lateinit var binding: ActivityCerealListBinding
     lateinit var averageLocation: String
+    var localAreaName: String = ""
     lateinit var basebinding : DialogProgressBinding
     private lateinit var mProgressDialog: Dialog
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,11 +27,20 @@ class CerealListActivity : BaseActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
         setActionBar(binding.toolbarCerealListActivity,"w")
-        if(intent.hasExtra(Constants.AVERAGE_LOCATION)){
-            averageLocation = intent.getStringExtra(Constants.AVERAGE_LOCATION)!!
-           updateDetails(averageLocation)
-        } else {
-            updateDetails(averageLocation)
+        if(intent.hasExtra(Constants.LOCAL_AREA_NAME)){
+            Log.e("Main Activity put extra tag ", Constants.LOCAL_AREA_NAME)
+            Log.e("Local area name has extra", localAreaName)
+            localAreaName = intent.getStringExtra(Constants.LOCAL_AREA_NAME)!!
+            Log.e("Cereal Local name received", localAreaName)
+            updateDetails(localAreaName)
+        }
+        else {
+            if(intent.hasExtra(Constants.AVERAGE_LOCATION)){
+                averageLocation = intent.getStringExtra(Constants.AVERAGE_LOCATION)!!
+                updateDetails(averageLocation)
+            }else {
+                updateDetails(averageLocation)
+            }
         }
     }
 
@@ -58,10 +69,14 @@ class CerealListActivity : BaseActivity() {
         mProgressDialog.dismiss()
     }
 
-    fun updateDetails(averageLocation: String) {
+    fun updateDetails(locationValue: String) {
         showProgressDialog("Fetching products...")
-        if(averageLocation.isNotEmpty())
-            FireBaseClass().getProductList(this,Constants.AVERAGE_LOCATION,averageLocation)
+        if(locationValue.isNotEmpty()) {
+            if(locationValue == localAreaName)
+                FireBaseClass().getProductList(this,Constants.LOCAL_AREA_NAME,locationValue)
+            else
+                FireBaseClass().getProductList(this,Constants.AVERAGE_LOCATION,locationValue)
+        }
         else
             FireBaseClass().getProductList(this,Constants.PRODUCT_CATEGORY,Constants.CEREALS)
     }

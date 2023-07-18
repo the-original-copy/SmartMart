@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
@@ -31,6 +32,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     lateinit var userName : String
     lateinit var userRole : String
     lateinit var averageLocation : String
+    lateinit var localAreaName : String
     lateinit var mCustomer : Customer
     lateinit var mFarmer: Farmer
     var menu : Menu? = null
@@ -58,6 +60,9 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         binding.appBarMain.contentMain.cvCereal.setOnClickListener {
             val intent = Intent(this,CerealListActivity::class.java)
             intent.putExtra(Constants.AVERAGE_LOCATION,averageLocation)
+            intent.putExtra(Constants.LOCAL_AREA_NAME,localAreaName)
+            Log.e("Main Activity put extra tag ", Constants.LOCAL_AREA_NAME)
+            Log.e("Main Activity put extra ", localAreaName)
             startActivity(intent)
         }
         binding.appBarMain.contentMain.cvDairy.setOnClickListener {
@@ -91,11 +96,14 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     fun getFarmerDetails(farmer: Farmer) {
         mFarmer = farmer
         averageLocation = mFarmer.average_location
+        Log.e("Main Activity Local area name", mFarmer.local_area_name)
+        localAreaName = mFarmer.local_area_name
     }
 
     fun getCustomerDetails(customer: Customer) {
         mCustomer = customer
         averageLocation = mCustomer.average_location
+        localAreaName = mCustomer.local_area_name
     }
 
     fun showProgressDialog(text: String) {

@@ -17,7 +17,8 @@ data class Product(
     val latitude: Double = 0.0,
     val average_location: String = "",
     var productNumberOfOrders: Int = 0,
-    val uniqueConfirmationID: Int = 0
+    val uniqueConfirmationID: Int = 0,
+    val local_area_name: String = ""
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
@@ -33,7 +34,8 @@ data class Product(
         parcel.readDouble(),
         parcel.readString()!!,
         parcel.readInt(),
-        parcel.readInt()
+        parcel.readInt(),
+        parcel.readString()!!
     ) {
     }
 
@@ -52,6 +54,7 @@ data class Product(
         parcel.writeString(average_location)
         parcel.writeInt(productNumberOfOrders)
         parcel.writeInt(uniqueConfirmationID)
+        parcel.writeString(local_area_name)
     }
 
     override fun describeContents(): Int {

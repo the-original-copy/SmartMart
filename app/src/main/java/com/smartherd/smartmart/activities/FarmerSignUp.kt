@@ -45,6 +45,7 @@ open class FarmerSignUp : BaseActivity() {
     private var mLongitude: Double = 0.0
     private var mLocation : String = " "
     private var mPostalCode : String = " "
+
     // Location
     private lateinit var mFusedLocationClient: FusedLocationProviderClient
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -144,7 +145,7 @@ open class FarmerSignUp : BaseActivity() {
         }
     }
 
-    private fun validateForm(name : String,email : String,password : String, phoneNumber : String) : Boolean {
+    private fun validateForm(name : String,email : String,password : String, phoneNumber : String,localAreaName: String) : Boolean {
         return when {
             TextUtils.isEmpty(name) -> {
                 showErrorSnackBar("Please enter name.")
@@ -170,6 +171,10 @@ open class FarmerSignUp : BaseActivity() {
                 showErrorSnackBar("Please enter phone number")
                 false
             }
+            TextUtils.isEmpty(localAreaName) -> {
+                showErrorSnackBar("As a farmer a local area name is required")
+                false
+            }
             else -> {
                 true
             }
@@ -181,15 +186,15 @@ open class FarmerSignUp : BaseActivity() {
         val email : String = binding.etEmail.text.toString().trim {it <= ' '}
         val password : String = binding.etPassword.text.toString().trim{ it <= ' '}
         val phonenumber : String = binding.etPhoneNumber.text.toString().trim {it <= ' '}
-
-        if(validateForm(name,email,password,phonenumber)) {
+        val localAreaName: String = binding.etLocalAreaName.text.toString().trim(){it <= ' '}
+        if(validateForm(name,email,password,phonenumber,localAreaName)) {
             showProgressDialog("Registering account...")
             auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener{ task ->
                 if(task.isSuccessful) {
                     val firebaseUser : FirebaseUser = task.result!!.user!!
                     val registeredEmail = firebaseUser.email!!
-                    val user = User(firebaseUser.uid,name,registeredEmail," ",phonenumber,mLocation,"F")
-                    val farmer = Farmer(firebaseUser.uid,name,registeredEmail,phonenumber,mLocation,mLongitude,mLatitude,mPostalCode)
+                    val user = User(firebaseUser.uid,name,registeredEmail," ",phonenumber,mLocation,"F",localAreaName)
+                    val farmer = Farmer(firebaseUser.uid,name,registeredEmail,phonenumber,mLocation,mLongitude,mLatitude,mPostalCode,localAreaName)
                     FireBaseClass().registerUser(this@FarmerSignUp,user)
                     FireBaseClass().createFarmer(this@FarmerSignUp,farmer)
 
