@@ -38,6 +38,7 @@ class ProductListAdapter(private val context: Context,private var list: ArrayLis
         holder.tvProductDescription.text = "Product Description: ${product.productDescription}"
         holder.tvProductPrice.text = "Product Price: ${product.productPrice}"
         holder.tvProductNoOfOrders.text = "Number of orders: ${product.productNumberOfOrders}"
+
         holder.itemView.setOnClickListener {
             if(onClickListener != null){
                 onClickListener!!.onClick(position,product)

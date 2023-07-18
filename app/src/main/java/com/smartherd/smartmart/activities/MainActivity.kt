@@ -61,28 +61,30 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             val intent = Intent(this,CerealListActivity::class.java)
             intent.putExtra(Constants.AVERAGE_LOCATION,averageLocation)
             intent.putExtra(Constants.LOCAL_AREA_NAME,localAreaName)
-            Log.e("Main Activity put extra tag ", Constants.LOCAL_AREA_NAME)
-            Log.e("Main Activity put extra ", localAreaName)
             startActivity(intent)
         }
         binding.appBarMain.contentMain.cvDairy.setOnClickListener {
             val intent = Intent(this,DairyListActivity::class.java)
             intent.putExtra(Constants.AVERAGE_LOCATION,averageLocation)
+            intent.putExtra(Constants.LOCAL_AREA_NAME,localAreaName)
             startActivity(intent)
         }
         binding.appBarMain.contentMain.cvMeat.setOnClickListener {
             val intent = Intent(this,MeatListActivity::class.java)
             intent.putExtra(Constants.AVERAGE_LOCATION,averageLocation)
+            intent.putExtra(Constants.LOCAL_AREA_NAME,localAreaName)
             startActivity(intent)
         }
         binding.appBarMain.contentMain.cvFruitsAndVegetables.setOnClickListener {
             val intent = Intent(this,FVListActivity::class.java)
             intent.putExtra(Constants.AVERAGE_LOCATION,averageLocation)
+            intent.putExtra(Constants.LOCAL_AREA_NAME,localAreaName)
             startActivity(intent)
         }
         binding.appBarMain.contentMain.cvOther.setOnClickListener {
             val intent = Intent(this,OtherProductListActivity::class.java)
             intent.putExtra(Constants.AVERAGE_LOCATION,averageLocation)
+            intent.putExtra(Constants.LOCAL_AREA_NAME,localAreaName)
             startActivity(intent)
         }
 

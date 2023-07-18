@@ -50,7 +50,7 @@
         android:layout_marginEnd="@dimen/intro_text_marginStartEnd"
         android:gravity="center"
         android:lineSpacingExtra="@dimen/intro_text_line_spacing_extra"
-        android:text="Buy and sell agricultural products online"
+        android:text="Creating a connected market place"
         android:textColor="@color/secondary_text_color"
         android:textSize="@dimen/intro_text_size" />
 
