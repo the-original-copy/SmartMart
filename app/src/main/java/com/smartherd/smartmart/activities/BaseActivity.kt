@@ -1,11 +1,15 @@
 package com.smartherd.smartmart.activities
 
+import android.app.Activity
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.View
 import android.widget.Adapter
 import android.widget.TextView
@@ -17,8 +21,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.smartherd.smartmart.R
+import com.smartherd.smartmart.adapter.OrdersListAdapter
 import com.smartherd.smartmart.adapter.ProductListAdapter
 import com.smartherd.smartmart.databinding.DialogProgressBinding
+import com.smartherd.smartmart.firebase.FireBaseClass
+import com.smartherd.smartmart.models.OrderedProduct
 import com.smartherd.smartmart.models.Product
 import com.smartherd.smartmart.utils.Constants
 import java.util.*
@@ -117,9 +124,60 @@ open class BaseActivity : AppCompatActivity() {
                     intent.putExtra(Constants.ID,product.id)
                     startActivity(intent)
                 }
-
             })
             }
+        else {
+            rv_list.visibility = View.INVISIBLE
+            tv.visibility = View.VISIBLE
+        }
+    }
+
+    fun populateOrderLists(list: ArrayList<OrderedProduct>, rv_list: RecyclerView, tv: TextView, context: Context) {
+        if(list.size > 0) {
+            rv_list.visibility = View.VISIBLE
+            tv.visibility = View.GONE
+            rv_list.layoutManager = LinearLayoutManager(context)
+            rv_list.setHasFixedSize(false)
+
+            val adapter = OrdersListAdapter(context,list)
+            rv_list.adapter = adapter
+
+            when(context) {
+                is CustomerMyOrdersActivity -> {
+                    adapter.setOnClickListener(object: OrdersListAdapter.OnClickListener{
+                        override fun onClick(position: Int, product: OrderedProduct) {
+                            val builder = AlertDialog.Builder(context)
+                            builder.setTitle("Your Order")
+                            builder.setMessage("Please select what to do with your order. Select confirm pickup only after buying product")
+                            builder.setPositiveButton("Confirm Pickup"){ dialogInterface,_ ->
+                                dialogInterface.dismiss()
+                                val intent = Intent(context,OrderedProductDetails::class.java)
+                                intent.putExtra(Constants.ORDER_ID_WITHIN_APP,product.orderID)
+                                Log.e("From item on click Unique ID",product.uniqueProductID.toString())
+                                intent.putExtra(Constants.FARMER_ID_WITHIN_APP,product.uniqueProductID)
+                                startActivity(intent)
+                            }
+                            builder.setNegativeButton("Cancel Order") { dialogInterface,_ ->
+                                dialogInterface.dismiss()
+                                FireBaseClass().deleteOrder(product.orderID)
+                                startActivity(Intent(context,MainActivity::class.java))
+                            }
+                            builder.setNeutralButton("Cancel"){ dialogInterface,_ ->
+                                dialogInterface.dismiss()
+                            }
+                            // Create the AlertDialog
+                            val alertDialog: AlertDialog = builder.create()
+                            // Set other dialog properties
+                            alertDialog.setCancelable(false) // Will not allow user to cancel after clicking on remaining screen area.
+                            alertDialog.show()
+                            alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#77dd77"))
+                            alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(Color.parseColor("#77dd77"))
+                            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#77dd77"))
+                        }
+                    })
+                }
+            }
+        }
         else {
             rv_list.visibility = View.INVISIBLE
             tv.visibility = View.VISIBLE

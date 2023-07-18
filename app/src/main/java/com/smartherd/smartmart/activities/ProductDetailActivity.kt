@@ -26,6 +26,8 @@ class ProductDetailActivity : BaseActivity() {
     lateinit var productID: String
     lateinit var mUser: User
     lateinit var mUserRole: String
+    lateinit var mFarmerName: String
+    lateinit var mCustomerName : String
     var quantity: Int = 0
     var mLongitude: Double? = null
     var mLatitude: Double? = null
@@ -86,6 +88,7 @@ class ProductDetailActivity : BaseActivity() {
                 intent.putExtra(Constants.INTENT_USER_ID,mUser.id)
                 Log.e("User ID passed",mUser.id)
                 intent.putExtra(Constants.QUANTITY,quantity)
+                intent.putExtra(Constants.CUSTOMER_NAME_WITHIN_APP,mCustomerName)
                 startActivity(intent)
             }
         }
@@ -108,6 +111,8 @@ class ProductDetailActivity : BaseActivity() {
         hideProgressDialog()
         mUser = user
         mUserRole = user.role
+        // Pass the name of the customer to an order from here then from order confirmation to order
+        mCustomerName = mUser.name
         if(mUserRole == "C") {
             binding.btnDeleteProduct.visibility = View.INVISIBLE
             binding.btnUpdateProduct.visibility = View.INVISIBLE
@@ -138,7 +143,7 @@ class ProductDetailActivity : BaseActivity() {
         binding.tvProductName.text = product.productName
         binding.tvProductDescription.text = product.productDescription
         binding.tvProductCategory.text = product.productCategory
-        FireBaseClass().farmerDetailsGivenID(this,product.farmerID)
+        binding.tvProductFarmer.text = product.farmerName
         binding.tvProductPrice.text = product.productPrice.toString()
         binding.tvProductLocation.text = product.location
 

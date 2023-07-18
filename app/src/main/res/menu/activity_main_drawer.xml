@@ -25,10 +25,16 @@
             android:icon="@drawable/ic_baseline_product_24"
             android:title="My Products"/>
         <item
-            android:id="@+id/nav_my_payments"
+            android:id="@+id/nav_my_sold_products"
             android:itemBackground = "@color/colorPrimary"
             android:icon="@drawable/ic_baseline_payments_24"
-            android:title="Payments"/>
+            android:title="Sold Products"/>
+
+        <item
+            android:id="@+id/nav_my_history"
+            android:itemBackground = "@color/colorPrimary"
+            android:icon="@drawable/ic_baseline_payments_24"
+            android:title="Bought Products"/>
         <item
             android:id="@+id/nav_sign_out"
             android:itemBackground = "@color/colorPrimary"

@@ -28,10 +28,12 @@ object Constants {
     const val FARMER_ID: String = "farmerID"
     const val CUSTOMER_ID: String = "customerID"
     const val PRODUCT_NO_OF_ORDERS: String = "productNumberOfOrders"
+    const val PRODUCT_UNIQUE_CONFIRMATION_ID: String = "productUniqueConfirmationID"
     const val PRODUCT_ORDER_ID="orderID"
     const val ORDER: String = "orders"
     const val QUANTITY: String = "quantity"
-    const val CUSTOMER_TO_MY_ORDERS: String = "CustomerToMyOrders"
-
+    const val CUSTOMER_NAME_WITHIN_APP: String = "customerNameWithin"
+    const val ORDER_ID_WITHIN_APP: String = "farmerNameWithin"
+    const val FARMER_ID_WITHIN_APP: String = "farmerIDWithIn"
 
 }

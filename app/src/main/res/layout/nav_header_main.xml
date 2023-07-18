@@ -40,4 +40,16 @@
         android:textSize="@dimen/nav_user_name_text_size"
         tools:text="Customer" />
 
+    <TextView
+        android:id="@+id/tv_account_ID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/nav_content_margin_StartEnd"
+        android:layout_marginTop="@dimen/nav_content_margin_top"
+        android:layout_marginEnd="@dimen/nav_content_margin_StartEnd"
+        android:layout_marginBottom="@dimen/nav_content_margin_bottom"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/nav_user_name_text_size"
+        tools:text="UserID: rctrj" />
+
 </LinearLayout>

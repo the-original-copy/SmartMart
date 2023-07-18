@@ -11,11 +11,13 @@ data class Product(
     val productPrice: Int = 0,
     val productImage: String = "",
     val farmerID: String = "",
+    val farmerName: String = "",
     val location: String = "",
     val longitude: Double = 0.0,
     val latitude: Double = 0.0,
     val average_location: String = "",
-    var productNumberOfOrders: Int = 0
+    var productNumberOfOrders: Int = 0,
+    val uniqueConfirmationID: Int = 0
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
@@ -26,9 +28,11 @@ data class Product(
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString()!!,
+        parcel.readString()!!,
         parcel.readDouble(),
         parcel.readDouble(),
         parcel.readString()!!,
+        parcel.readInt(),
         parcel.readInt()
     ) {
     }
@@ -41,11 +45,13 @@ data class Product(
         parcel.writeInt(productPrice)
         parcel.writeString(productImage)
         parcel.writeString(farmerID)
+        parcel.writeString(farmerName)
         parcel.writeString(location)
         parcel.writeDouble(longitude)
         parcel.writeDouble(latitude)
         parcel.writeString(average_location)
         parcel.writeInt(productNumberOfOrders)
+        parcel.writeInt(uniqueConfirmationID)
     }
 
     override fun describeContents(): Int {

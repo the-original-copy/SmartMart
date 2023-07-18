@@ -8,10 +8,9 @@ class OrderedProduct (
     var productImage: String = "",
     var orderID: String = "",
     var totalPrice: Int = 0,
-    var quantity: Int = 0) {
-
-    @JvmName("setProductName1")
-    fun setProductName(productName: String){
-        this.productName = productName
-    }
-}
+    var quantity: Int = 0,
+    var customerID: String = "",
+    var farmerID: String = "",
+    var farmerName: String = "",
+    var uniqueProductID: Int = 0
+    )

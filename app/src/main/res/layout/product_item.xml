@@ -55,6 +55,16 @@
                 android:textColor="@color/secondary_text_color"
                 android:textSize="@dimen/item_board_created_by_text_size"
                 tools:text="Price" />
+
+            <TextView
+                android:id="@+id/tv_product_no_of_orders"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/secondary_text_color"
+                android:textSize="@dimen/item_board_created_by_text_size"
+                tools:text="Number of orders" />
+
+
         </LinearLayout>
     </LinearLayout>
 

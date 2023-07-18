@@ -8,16 +8,20 @@ data class Order(
     var productID: String = "",
     var customerID: String = "",
     var farmerID: String = "",
+    var farmerName: String = "",
     var quantity: Int = 0,
-    var totalPrice: Int = 0
+    var totalPrice: Int = 0,
+    val complete: String = ""
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString()!!,
+        parcel.readString()!!,
         parcel.readInt(),
-        parcel.readInt()
+        parcel.readInt(),
+        parcel.readString()!!
     ) {
     }
 
@@ -26,8 +30,10 @@ data class Order(
         parcel.writeString(productID)
         parcel.writeString(customerID)
         parcel.writeString(farmerID)
+        parcel.writeString(farmerName)
         parcel.writeInt(quantity)
         parcel.writeInt(totalPrice)
+        parcel.writeString(complete)
     }
 
     override fun describeContents(): Int {

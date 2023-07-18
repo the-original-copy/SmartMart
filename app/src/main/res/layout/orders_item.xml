@@ -53,6 +53,20 @@
                 android:textColor="@color/secondary_text_color"
                 android:textSize="@dimen/item_board_created_by_text_size"
                 tools:text="Total Amount" />
+            <TextView
+                android:id="@+id/tv_from"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/secondary_text_color"
+                android:textSize="@dimen/item_board_created_by_text_size"
+                tools:text="From" />
+            <TextView
+                android:id="@+id/tv_product_unique_shortID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/secondary_text_color"
+                android:textSize="@dimen/item_board_created_by_text_size"
+                tools:text="Unique ID" />
 
         </LinearLayout>
     </LinearLayout>

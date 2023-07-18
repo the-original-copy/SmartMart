@@ -18,6 +18,8 @@ class ProductListAdapter(private val context: Context,private var list: ArrayLis
         var tvProductName = itemBinding.tvProductName
         var tvProductDescription = itemBinding.tvProductDescription
         var tvProductPrice = itemBinding.tvProductPrice
+        var tvProductNoOfOrders = itemBinding.tvProductNoOfOrders
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
@@ -35,6 +37,7 @@ class ProductListAdapter(private val context: Context,private var list: ArrayLis
         holder.tvProductName.text = "Product Name: ${product.productName}"
         holder.tvProductDescription.text = "Product Description: ${product.productDescription}"
         holder.tvProductPrice.text = "Product Price: ${product.productPrice}"
+        holder.tvProductNoOfOrders.text = "Number of orders: ${product.productNumberOfOrders}"
         holder.itemView.setOnClickListener {
             if(onClickListener != null){
                 onClickListener!!.onClick(position,product)

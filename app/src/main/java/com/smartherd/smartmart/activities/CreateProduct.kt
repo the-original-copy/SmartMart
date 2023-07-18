@@ -167,6 +167,7 @@ class CreateProduct : BaseActivity() {
 
     fun createProduct() {
         showProgressDialog("Creating product...")
+        val uniqueConfirmationID = (1..10000).random()
         val product = Product(
             "",
             binding.etProductName.text.toString(),
@@ -175,11 +176,13 @@ class CreateProduct : BaseActivity() {
             Integer.parseInt(binding.etProductPrice.text.toString()),
             mProductImageURL,
             mFarmerDetails.id,
+            mFarmerDetails.name,
             mFarmerDetails.location,
             mFarmerDetails.longitude,
             mFarmerDetails.latitude,
             mFarmerDetails.average_location,
-            0
+            0,
+            uniqueConfirmationID
         )
         FireBaseClass().createProduct(this,product)
     }

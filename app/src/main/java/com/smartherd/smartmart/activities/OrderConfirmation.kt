@@ -68,8 +68,10 @@ class OrderConfirmation : BaseActivity() {
             mProductID,
             mCustomerID,
             mProduct.farmerID,
+            mProduct.farmerName,
             mQuantity,
-            mTotalPrice
+            mTotalPrice,
+            "false"
         )
         FireBaseClass().createOrder(this,order)
         mProduct.productNumberOfOrders+=1
@@ -95,10 +97,10 @@ class OrderConfirmation : BaseActivity() {
         binding.etProductName.setText(product.productName)
         binding.etProductDescription.setText(product.productDescription)
         binding.etQuantity.setText(mQuantity.toString())
-        binding.etProductPrice.setText(product.productPrice.toString())
+        binding.etProductPrice.setText("Ksh " + product.productPrice.toString())
         val total = product.productPrice * mQuantity
         mTotalPrice = total
-        binding.totalAmountPayable.text = total.toString()
+        binding.totalAmountPayable.text =" Ksh " + total.toString()
         mProductPrice = product.productPrice
     }
 

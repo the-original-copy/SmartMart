@@ -7,8 +7,10 @@ import android.util.Log
 import android.widget.Toast
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.smartherd.smartmart.activities.*
+import com.smartherd.smartmart.adapter.OrdersListAdapter
 import com.smartherd.smartmart.databinding.DialogProgressBinding
 import com.smartherd.smartmart.models.*
 import com.smartherd.smartmart.utils.Constants
@@ -137,13 +139,25 @@ open class FireBaseClass : BaseActivity() {
             .addOnFailureListener { e -> Log.w("ID not set", "Error updating document", e) }
             }
 
+    fun completeOrder(activity: OrderedProductDetails,status: String,id: String){
+        mFireStore.collection(Constants.ORDER)
+            .document(id)
+            .update("complete",status)
+            .addOnSuccessListener {
+                activity.confirmationComplete()
+                Log.e("Order Completed", "DocumentSnapshot successfully updated!")
+            }
+            .addOnFailureListener { e -> Log.w("Order not Completed", "Error updating document", e) }
+    }
+
     fun setFirebaseProductID(activity: Activity, id : String) {
         when(activity) {
             is CreateProduct -> {
                 mFireStore.collection(Constants.PRODUCTS)
                     .document(id)
                     .update("id",id)
-                    .addOnSuccessListener { Log.e("ID set", "DocumentSnapshot successfully updated!") }
+                    .addOnSuccessListener {
+                        Log.e("ID set", "DocumentSnapshot successfully updated!") }
                     .addOnFailureListener { e -> Log.w("ID not set", "Error updating document", e) }
             }
         }
@@ -195,23 +209,40 @@ open class FireBaseClass : BaseActivity() {
             }
     }
 
-    fun farmerDetailsGivenID(activity: Activity, farmerId: String) {
-        mFireStore.collection(Constants.FARMERS)
-            .document(farmerId)
+    fun customerDetailsGivenID(customerId: String) : Customer{
+        var customer: Customer? = null
+        mFireStore.collection(Constants.CUSTOMERS)
+            .document(customerId)
             .get()
             .addOnSuccessListener { document ->
-                val farmerDetails = document.toObject(Farmer::class.java)!!
-                when(activity) {
-                    is ProductDetailActivity -> {
-                        activity.getFarmerDetails(farmerDetails)
-                    }
-                }
+                customer = if(document != null)
+                    document.toObject(Customer::class.java)
+                else
+                    Customer()
             }.addOnFailureListener {
                 Log.e(
                     "Didn't work",
                     "Error writing document",
                 )
             }
+        return customer!!
+    }
+
+    fun farmerDetailsGivenID(farmerId: String) : Farmer {
+        lateinit var farmer: Farmer
+        mFireStore.collection(Constants.USERS)
+            .whereEqualTo(Constants.ID,farmerId)
+            .get()
+            .addOnSuccessListener { document ->
+                for (i in document)
+                    farmer = i.toObject(Farmer::class.java)
+            }.addOnFailureListener {
+                Log.e(
+                    "Didn't work",
+                    "Error writing document",
+                )
+            }
+        return farmer
     }
 
     fun customerDetails(activity: Activity) {
@@ -289,10 +320,19 @@ open class FireBaseClass : BaseActivity() {
             .document(productID)
             .delete()
             .addOnSuccessListener {
-                Log.d(TAG, "DocumentSnapshot successfully deleted!")
+                Log.d(TAG, "ProductDocumentSnapshot successfully deleted!")
                 activity.deletionSuccess()
             }
             .addOnFailureListener { e -> Log.w(TAG, "Error deleting document", e) }
+    }
+
+    fun deleteOrder(orderID: String) {
+        mFireStore.collection(Constants.ORDER)
+            .document(orderID)
+            .delete()
+            .addOnSuccessListener {
+                Log.d(TAG, "OrderDocumentSnapshot successfully deleted!")
+            } .addOnFailureListener { e -> Log.w(TAG, "Error deleting document", e) }
     }
 
     fun updateCustomer(activity: ProfileActivity, customerHashMap: HashMap<String, Any>) {
@@ -409,10 +449,13 @@ open class FireBaseClass : BaseActivity() {
     }
 
 
-        fun getProductsOrdered(activity: CustomerMyOrdersActivity, userID: String) {
-            val productHashMap = HashMap<String,OrderedProduct>()
+        fun getProductsOrdered(activity: Activity, field: String,value : String) {
+            val customerProductHashMap = HashMap<String,OrderedProduct>()
+            val farmerProductHashMap = HashMap<String,OrderedProduct>()
+            val customerBoughtProductHashMap = HashMap<String,OrderedProduct>()
+            val farmerSoldProductHashMap = HashMap<String,OrderedProduct>()
             mFireStore.collection(Constants.ORDER)
-                .whereEqualTo(Constants.CUSTOMER_ID,userID)
+                .whereEqualTo(field,value)
                 .get()
                 .addOnSuccessListener { orders ->
                     for(i in orders) {
@@ -422,14 +465,75 @@ open class FireBaseClass : BaseActivity() {
                             .get()
                             .addOnSuccessListener { product ->
                                 val productObject = product.toObject(Product::class.java)!!
-                                val orderedProduct = OrderedProduct(
-                                productObject.productName,
-                                productObject.productImage,
-                                order.id,
-                                order.totalPrice,
-                                order.quantity)
-                                productHashMap[order.id] = orderedProduct
-                                activity.assignThisOrderList(productHashMap)
+
+                                when(activity) {
+                                    is CustomerMyOrdersActivity -> {
+                                        if(order.complete == "false") {
+                                            val orderedProduct = OrderedProduct(
+                                                productObject.productName,
+                                                productObject.productImage,
+                                                order.id,
+                                                order.totalPrice,
+                                                order.quantity,
+                                                "",
+                                                order.farmerID,
+                                                order.farmerName,
+                                                productObject.uniqueConfirmationID)
+                                            Log.e("Farmer ID", order.farmerID)
+                                            customerProductHashMap[order.id] = orderedProduct
+                                            activity.assignThisOrderList(customerProductHashMap)
+                                        }
+                                    }
+                                    is FarmerPendingOrdersActivity -> {
+                                        if(order.complete == "false") {
+                                            val orderedProduct = OrderedProduct(
+                                                productObject.productName,
+                                                productObject.productImage,
+                                                order.id,
+                                                order.totalPrice,
+                                                order.quantity,
+                                                order.customerID,
+                                                "",
+                                                "",
+                                                productObject.uniqueConfirmationID)
+                                            farmerProductHashMap[order.id] = orderedProduct
+                                            activity.assignThisOrderList(farmerProductHashMap)
+                                        }
+                                    }
+                                    is CustomerBoughtProducts -> {
+                                        if(order.complete == "true"){
+                                            val orderedProduct = OrderedProduct(
+                                                productObject.productName,
+                                                productObject.productImage,
+                                                order.id,
+                                                order.totalPrice,
+                                                order.quantity,
+                                                "",
+                                                order.farmerID,
+                                                order.farmerName,
+                                                productObject.uniqueConfirmationID)
+                                            customerBoughtProductHashMap[order.id] = orderedProduct
+                                            activity.assignThisOrderList(customerBoughtProductHashMap)
+                                        }
+                                    }
+                                    is FarmerSoldProducts -> {
+                                        if(order.complete == "true"){
+                                            val orderedProduct = OrderedProduct(
+                                                productObject.productName,
+                                                productObject.productImage,
+                                                order.id,
+                                                order.totalPrice,
+                                                order.quantity,
+                                                order.customerID,
+                                                "",
+                                                "",
+                                                productObject.uniqueConfirmationID)
+                                            farmerSoldProductHashMap[order.id] = orderedProduct
+                                            activity.assignThisOrderList(farmerSoldProductHashMap)
+                                        }
+                                    }
+                                }
+
                             }
                     }
                 }

@@ -137,6 +137,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
+
             R.id.nav_sign_out -> {
                 FirebaseAuth.getInstance().signOut()
                 val intent = Intent(this, IntroActivity::class.java)
@@ -153,7 +154,19 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 startActivity(Intent(this,ProductListActivity::class.java))
             }
             R.id.nav_my_orders -> {
-                intent = Intent(this,CustomerMyOrdersActivity::class.java)
+                val intent = Intent(this,CustomerMyOrdersActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.nav_my_pending_orders -> {
+                val intent = Intent(this,FarmerPendingOrdersActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.nav_my_sold_products -> {
+                val intent = Intent(this,FarmerSoldProducts::class.java)
+                startActivity(intent)
+            }
+            R.id.nav_my_history -> {
+                val intent = Intent(this,CustomerBoughtProducts::class.java)
                 startActivity(intent)
             }
         }
@@ -176,14 +189,17 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         navViewBinding.tvUsername.text = user.name
         if(user.role == "C"){
             navViewBinding.tvAccountType.text = "Customer"
+            navViewBinding.tvAccountID.text = "CustomerID: +${user.id}"
             FireBaseClass().customerDetails(this)
             menu!!.findItem(R.id.nav_my_products).isVisible = false
             menu!!.findItem(R.id.nav_my_pending_orders).isVisible = false
+            menu!!.findItem(R.id.nav_my_sold_products).isVisible = false
         }
         else if(user.role == "F"){
             navViewBinding.tvAccountType.text = "Farmer"
             FireBaseClass().farmerDetails(this)
             menu!!.findItem(R.id.nav_my_orders).isVisible = false
+            menu!!.findItem(R.id.nav_my_history).isVisible = false
         }
     }
 
